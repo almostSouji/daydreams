@@ -41,7 +41,7 @@ class DocsCommand extends Command {
 		if (!embed) {
 			return msg.util.reply('Could not find requested content.');
 		}
-		if (msg.channel.type === 'dm' || msg.channel.permissionsFor(msg.guild.me).has(['ADD_REACTIONS', 'MANAGE_MESSAGES'], false)) {
+		if (msg.channel.type === 'dm' || !msg.channel.permissionsFor(msg.guild.me).has(['ADD_REACTIONS', 'MANAGE_MESSAGES'], false)) {
 			return msg.util.send({ embed });
 		}
 		const m = await msg.util.send({ embed });
