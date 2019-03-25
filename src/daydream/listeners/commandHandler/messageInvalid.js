@@ -26,9 +26,9 @@ class MessageInvalidListener extends Listener {
 
 			const user = this.client.users.get(userQuery.id);
 			if (!user) {
-				return msg.channel.send(`${this.client.config.emojis.fail} Recipient not found`);
+				return msg.channel.send(`${this.client.config.emojis.crest} Recipient not found`);
 			}
-			user.relayMessage(msg).catch(() => msg.channel.send(`${this.client.config.emojis.fail} Connection to \`${user.tag}\` could not be established.`));
+			user.relayMessage(msg).catch(() => msg.channel.send(`${this.client.config.emojis.crest} Connection to \`${user.tag}\` could not be established.`));
 		}
 	}
 }

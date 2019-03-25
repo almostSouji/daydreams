@@ -21,8 +21,7 @@ const client = new CelClient({
 		idle: process.env.EMOJI_IDLE,
 		dnd: process.env.EMOJI_DND,
 		streaming: process.env.EMOJI_STREAMING,
-		crest: process.env.EMOJI_CREST,
-		fail: process.env.EMOJI_FAIL
+		crest: process.env.EMOJI_CREST
 	},
 	colors: {
 		defaultEmbed: parseInt(process.env.EMBED_DEFAULT_COLOR, 10)
