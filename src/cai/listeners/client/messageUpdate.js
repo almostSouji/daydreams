@@ -49,7 +49,7 @@ class MessageUpdateListener extends Listener {
 		update.addField('Metadata:', stripIndents`
 						Author: ${oM.author} \`${oM.author.tag}\` (\`${oM.author.id}\`)
 						Channel: ${oM.channel} \`${oM.channel.name}\` (\`${oM.channel.id}\`)
-						Message: \`${oM.id}\` [[link]](${oM.url})
+						Message: \`${oM.id}\` [➜](${oM.url} 'jump to message')
 						`)
 			.setColor(this.client.config.colors.logEdit)
 			.setFooter('edited')

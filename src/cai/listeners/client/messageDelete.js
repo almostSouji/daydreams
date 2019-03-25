@@ -41,7 +41,7 @@ class MessageDeleteListener extends Listener {
 		embed.addField('Metadata:', stripIndents`
 						Author: ${msg.author} \`${msg.author.tag}\` (\`${msg.author.id}\`)
 						Channel: ${msg.channel} \`${msg.channel.name}\` (\`${msg.channel.id}\`)
-						Message ID: \`${msg.id}\` [[link]](${msg.url})${attachmentSize ? `\nAttachments: ${attachmentSize}` : ''}
+						Message ID: \`${msg.id}\` [➜](${msg.url} 'jump to location')${attachmentSize ? `\nAttachments: ${attachmentSize}` : ''}
 						`)
 			.setColor(this.client.config.colors.logDelete)
 			.setFooter('deleted')
