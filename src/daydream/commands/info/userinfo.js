@@ -1,5 +1,5 @@
 const { Command, Argument, version: aVersion } = require('discord-akairo');
-const { GuildMember, User, version } = require('discord.js');
+const { GuildMember, User, version, Permissions } = require('discord.js');
 const { stripIndents } = require('common-tags');
 const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict, formatDistance } = require('date-fns');
@@ -43,7 +43,7 @@ class UserInfoCommand extends Command {
 		return toTitleCase(ref.presence.status);
 	}
 
-	buildInfoEmbed(invoke, ref, permissions, color) {
+	async buildInfoEmbed(invoke, ref, permissions, color) {
 		const user = ref instanceof GuildMember ? ref.user : ref;
 
 		const embed = new DaydreamEmbed()
@@ -115,16 +115,20 @@ class UserInfoCommand extends Command {
 			embed.addField(`${spotify ? 'Song Information' : 'Activity'}`, activityString, false);
 		}
 		if (ref.id === this.client.user.id) {
+			const creator = await this.client.users.fetch('83886770768314368');
+			const permissionArray = [...new Set(this.handler.modules.reduce((a, e) => a.concat(e.clientPermissions), []).filter(e => e))];
+			const perm = new Permissions(permissionArray);
 			const botStatsString = `Guilds: ${this.client.guilds.size} | Users: ${this.client.users.size} | Channels: ${this.client.channels.size}`;
 			const botInfoString = stripIndents`
 					Runtime: Node ${process.version}
 					Library: Discord.js ${version}
 					Framework: Akairo ${aVersion}
 
-					[Invite me to your server](https://discordapp.com/oauth2/authorize?client_id=${ref.client.user.id}&permissions=67193920&scope=bot)`;
-			embed.addField('Stats', botStatsString, false);
-			embed.addField('Bot Information', botInfoString, false);
-			embed.setTitle('Fox: Well, well, this is none other than the Kamakura-period uchigatana, he who is named Nakigitsune. I am his companion fox!');
+					[Invite me to your server](https://discordapp.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=${perm.bitfield}&scope=bot)`;
+			embed
+				.addField('Stats', botStatsString, false)
+				.addField('Bot Information', botInfoString, false)
+				.setFooter(`Coded with 🍵 by ${creator.username} | running on Node.js ${process.version}`, creator.displayAvatarURL());
 		}
 
 
@@ -142,7 +146,7 @@ class UserInfoCommand extends Command {
 				queryFetch = await msg.guild.members.fetch(target);
 			}
 			if (queryFetch.size) {
-				return msg.util.send('', this.buildInfoEmbed(msg, queryFetch.first, permissions, color));
+				return msg.util.send('', await this.buildInfoEmbed(msg, queryFetch.first, permissions, color));
 			}
 			throw new Error('no member');
 		} catch (err) {
