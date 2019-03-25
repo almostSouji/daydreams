@@ -1,6 +1,6 @@
 const { Command } = require('discord-akairo');
 const fetch = require('node-fetch');
-const validLocationString = 'Locations: Any location in any language(`munich`), airports(`MUC`), sights (`~statue of liberty`), moon phases (`moon`, `moon@2019-03-25`), GPS coordinates(`-78.46,106.79`).';
+const validLocationString = 'Locations: Any location in any language (`munich`), airports (`MUC`), sights (`~statue of liberty`), moon phases (`moon`, `moon@2019-03-25`), GPS coordinates (`-78.46,106.79`).';
 
 class QuoteCommand extends Command {
 	constructor() {
