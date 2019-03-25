@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const defaultColor = parseInt(process.env.DEFAULT_EMBED_COLOR, 10);
+const defaultColor = parseInt(process.env.EMBED_DEFAULT_COLOR, 10);
 const limits = {
 	title: 256,
 	description: 2048,
