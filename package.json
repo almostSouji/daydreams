@@ -1,0 +1,30 @@
+{
+  "name": "daydreams",
+  "version": "1.0.0",
+  "description": "Daydreams...",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@discordjs/uws": "^10.149.0",
+    "@yarnpkg/lockfile": "^1.1.0",
+    "common-tags": "^1.8.0",
+    "date-fns": "^2.0.0-alpha.23",
+    "discord-akairo": "1Computer1/discord-akairo",
+    "discord.js": "discordjs/discord.js",
+    "dotenv": "^6.0.0",
+    "node-fetch": "^2.3.0",
+    "pg": "^7.5.0",
+    "query-string": "^6.4.0",
+    "sequelize": "^4.39.0",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "eslint-config-aqua": "^4.3.4"
+  },
+  "eslintConfig": {
+    "extends": "aqua/node"
+  },
+  "scripts": {
+    "start": "node src/daydream.js"
+  }
+}
