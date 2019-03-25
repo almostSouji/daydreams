@@ -128,7 +128,7 @@ class UserInfoCommand extends Command {
 			embed
 				.addField('Stats', botStatsString, false)
 				.addField('Bot Information', botInfoString, false)
-				.setFooter(`Coded with 🍵 by ${creator.username} | running on Node.js ${process.version}`, creator.displayAvatarURL());
+				.setFooter(`Coded with 🍵 by ${creator.username}`, creator.displayAvatarURL());
 		}
 
 
