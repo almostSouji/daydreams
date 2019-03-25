@@ -33,29 +33,28 @@ class MessageDeleteListener extends Listener {
 		if (!hook) {
 			hook = await channel.createWebhook('logs', { avatar: this.client.user.displayAvatarURL({ format: 'png' }) });
 		}
-		const embed =
-			new DaydreamEmbed()
-				.setTitle('Metadata')
-				.setDescription(stripIndents`
+		const embed = new DaydreamEmbed();
+		if (msg.content) {
+			embed.addField('Content:', msg.content);
+		}
+		const attachmentSize = msg.attachments.size;
+		embed.addField('Metadata:', stripIndents`
 						Author: ${msg.author} \`${msg.author.tag}\` (\`${msg.author.id}\`)
 						Channel: ${msg.channel} \`${msg.channel.name}\` (\`${msg.channel.id}\`)
-						Message ID: \`${msg.id}\` [[link]](${msg.url})
+						Message ID: \`${msg.id}\` [[link]](${msg.url})${attachmentSize ? `\nAttachments: ${attachmentSize}` : ''}
 						`)
-				.setColor(this.client.config.colors.logDelete)
-				.setFooter('deleted')
-				.setTimestamp();
-		for (const e of msg.embeds) {
-			e.setColor(null);
-		}
+			.setColor(this.client.config.colors.logDelete)
+			.setFooter('deleted')
+			.setTitle('MESSAGE DELETED')
+			.setTimestamp();
+
 		const options = {
 			avatarURL: msg.author.displayAvatarURL({ format: 'png' }),
 			username: msg.author.username,
-			embeds: msg.embeds,
+			embeds: [embed],
 			files: msg.attachments.map(a => ({ attachment: a.proxyURL, name: a.name }))
 		};
-		options.embeds.push(embed);
-		options.embeds = options.embeds.slice(-10);
-		return hook.send(msg.content, options);
+		return hook.send(null, options);
 	}
 }
 

@@ -39,25 +39,27 @@ class MessageUpdateListener extends Listener {
 		if (!hook) {
 			hook = await channel.createWebhook('logs', { avatar: this.client.user.displayAvatarURL({ format: 'png' }) });
 		}
-		const update = new DaydreamEmbed()
-			.addField('Old content:', oM.content)
-			.addField('New content:', nM.content);
-		const embed =
-			new DaydreamEmbed()
-				.setTitle('Metadata')
-				.setDescription(stripIndents`
+		const update = new DaydreamEmbed();
+		if (oM.content) {
+			update.addField('Old content:', oM.content);
+		}
+		if (nM.content) {
+			update.addField('New content:', nM.content);
+		}
+		update.addField('Metadata:', stripIndents`
 						Author: ${oM.author} \`${oM.author.tag}\` (\`${oM.author.id}\`)
 						Channel: ${oM.channel} \`${oM.channel.name}\` (\`${oM.channel.id}\`)
 						Message: \`${oM.id}\` [[link]](${oM.url})
 						`)
-				.setColor(this.client.config.colors.logEdit)
-				.setFooter('edited')
-				.setTimestamp();
+			.setColor(this.client.config.colors.logEdit)
+			.setFooter('edited')
+			.setTitle('MESSAGE UPDATED')
+			.setTimestamp();
 
 		const options = {
 			avatarURL: oM.author.displayAvatarURL({ format: 'png' }),
 			username: oM.author.username,
-			embeds: [update, embed]
+			embeds: [update]
 		};
 		return hook.send(null, options);
 	}
