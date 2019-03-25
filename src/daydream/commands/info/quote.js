@@ -11,7 +11,7 @@ class QuoteCommand extends Command {
 				usage: '<messageID> [--color] [--edits]'
 			},
 			async before(m) {
-				await m.util.send('Fetching message...');
+				await m.util.send('Fetching...');
 			},
 			editable: true,
 			clientPermissions: ['EMBED_LINKS'],
@@ -31,7 +31,9 @@ class QuoteCommand extends Command {
 					match: 'flag',
 					flag: ['--e', '--changes', '--edits', '--show']
 				}
-			]
+			],
+			cooldown: 10000,
+			ratelimit: 1
 		});
 	}
 
@@ -55,7 +57,7 @@ class QuoteCommand extends Command {
 				embed.addField(`Version ${format(m.editedAt || m.createdAt, 'yyyy/MM/dd/HH:mm:ss')} (UTC)`, m.content);
 			}
 		} else {
-			embed.setDescription(message.content);
+			embed.setDescription(`${message.content}\n[➜](${message.url} 'jump to message')`);
 		}
 		return embed.applySpacers().shorten();
 	}
