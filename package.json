@@ -25,6 +25,7 @@
     "extends": "aqua/node"
   },
   "scripts": {
-    "start": "node src/daydream.js"
+    "start_cai": "cd src/cai & node bot.js",
+    "start_cel": "cd src/cel & node bot.js"
   }
 }
