@@ -15,7 +15,7 @@
     "pg": "^7.5.0",
     "query-string": "^6.4.0",
     "sequelize": "^4.39.0",
-    "winston": "^3.1.0"
+    "winston": "^3.1.0",
   },
   "devDependencies": {
     "eslint": "^5.4.0",
@@ -25,7 +25,7 @@
     "extends": "aqua/node"
   },
   "scripts": {
-    "start_cai": "cd src/cai & node bot.js",
-    "start_cel": "cd src/cel & node bot.js"
+    "startcai": "cd src/cai & node bot.js",
+    "startcel": "cd src/cel & node bot.js",
   }
 }
