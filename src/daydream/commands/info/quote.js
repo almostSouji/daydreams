@@ -19,7 +19,7 @@ class QuoteCommand extends Command {
 			args: [
 				{
 					id: 'qMsg',
-					type: Argument.union('guildMessage', 'string')
+					type: Argument.union('relevantMessage', 'string')
 				},
 				{
 					id: 'color',
@@ -47,12 +47,12 @@ class QuoteCommand extends Command {
 				embed.setColor(author.displayColor);
 			}
 		} else {
-			embed.setAuthor(parseInt(author.discriminator, 10) ? `${author.tag} ${author.bot ? '• Bot' : ''}` : `${author.username} • Webhook`, author.displayAvatarURL());
+			embed.setAuthor(message.webhookid ? `${author.username} • Webhook` : `${author.tag} ${author.bot ? '• Bot' : ''}`, author.displayAvatarURL());
 		}
 		if (message.channel.type === 'text') {
 			embed.setFooter(`In #${message.channel.name}`);
 		}
-		if (message.edits && showedits) {
+		if (message.edits.length && showedits) {
 			for (const m of message.edits) {
 				embed.addField(`Version ${format(m.editedAt || m.createdAt, 'yyyy/MM/dd/HH:mm:ss')} (UTC)`, m.content);
 			}
@@ -63,7 +63,6 @@ class QuoteCommand extends Command {
 	}
 
 	exec(msg, { qMsg, color, edits }) {
-		let e = edits;
 		if (!qMsg) {
 			return msg.util.send(`✘ No target provided, please provide a valid message ID.`);
 		}
@@ -75,9 +74,9 @@ class QuoteCommand extends Command {
 				return msg.util.send(`✘ The targeted message does not have any content to quote.`);
 			}
 			if (qMsg.channel.type === 'text' && !qMsg.channel.permissionsFor(msg.author).has('MANAGE_MESSAGES')) {
-				e = false;
+				edits = false;
 			}
-			return msg.util.send('', this.buildInfoEmbed(qMsg, color, e));
+			return msg.util.send('', this.buildInfoEmbed(qMsg, color, edits));
 		}
 		return msg.util.send(`✘ Can not convert \`${qMsg}\` to \`message\``);
 	}
