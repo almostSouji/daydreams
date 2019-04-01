@@ -18,6 +18,7 @@ class SandboxBuildCommand extends Command {
 				content: 'Build a new Sandbox',
 				usage: '[--text <amount>] [--voice <amount>] [--category <amount>] [--nsfw <amount>] [--bot <botID>] [--permissions [number]]'
 			},
+			clientPermissions: ['EMBED_LINKS'],
 			args: [
 				{
 					'id': 'text',

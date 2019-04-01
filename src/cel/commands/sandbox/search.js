@@ -29,6 +29,7 @@ class SandboxSeachCommand extends Command {
 				content: 'Search for sandbox (display sandbox list if no arguments are provided)',
 				usage: '[number]'
 			},
+			clientPermissions: ['EMBED_LINKS'],
 			args: [
 				{
 					id: 'guild',
