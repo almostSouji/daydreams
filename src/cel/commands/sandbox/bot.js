@@ -26,6 +26,7 @@ class BotInviteCommand extends Command {
 				content: 'Create invite for provided bot id',
 				usage: '<id> [--permissions <permissionnumber>]'
 			},
+			clientPermissions: ['EMBED_LINKS'],
 			args: [
 				{
 					id: 'user',
@@ -69,10 +70,7 @@ class BotInviteCommand extends Command {
 			.addField('Invite', `<https://discordapp.com/oauth2/authorize?client_id=${user.id}&permissions=${permissions}&scope=bot>`)
 			.addField('Permissions', new Permissions(permissions).toArray(false).map(perm => `\`${perm}\``)
 				.join(', '));
-		msg.util.send(
-			RESPONSESA[Math.floor(Math.random() * RESPONSESA.length)]
-				.replace('$(user)', user.tag), embed
-		);
+		msg.util.send('', { embed });
 	}
 }
 module.exports = BotInviteCommand;
