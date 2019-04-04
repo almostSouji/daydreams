@@ -1,7 +1,7 @@
 const { Command, Argument } = require('discord-akairo');
 const { stripIndents } = require('common-tags');
 const { GuildEmoji, Role } = require('discord.js');
-const DaydreamEmbed = require('../../structures/DaydreamEmbed');
+const { DaydreamEmbed } = require('../../../daydream');
 const { format, formatDistanceStrict } = require('date-fns');
 
 
