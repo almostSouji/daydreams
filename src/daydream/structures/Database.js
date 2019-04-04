@@ -28,12 +28,6 @@ sequelize.define('settings', {
 		type: Sequelize.JSON
 	}
 });
-
-sequelize.define('rolestates', {
-	role: Sequelize.TEXT,
-	guild: Sequelize.TEXT,
-	user: Sequelize.TEXT
-});
 /* eslint-enable camelcase */
 
 module.exports = sequelize;

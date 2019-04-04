@@ -44,7 +44,7 @@ class ServerInfoCommand extends Command {
 		`, true);
 
 		embed.addField('Counts', channelCounts.concat(memberCounts, roleCount).join(`\n`), true);
-		if (this.client.guildSettings.get(ref.id, 'roleState')) {
+		if (this.client.guildSettings.get(ref.id, 'roleState') && this.client.db.models.rolestates) {
 			const result = await this.client.db.models.rolestates.findAll({
 				where: {
 					guild: ref.id
