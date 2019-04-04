@@ -1,5 +1,5 @@
 const { Command, Argument } = require('discord-akairo');
-const DaydreamEmbed = require('../../structures/DaydreamEmbed');
+const { DaydreamEmbed } = require('../../../daydream');
 const { stripIndents } = require('common-tags');
 const { GuildMember } = require('discord.js');
 const { Op } = require('sequelize');
