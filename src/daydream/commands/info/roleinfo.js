@@ -52,7 +52,8 @@ class RoleInfoCommand extends Command {
 		return embed.applySpacers();
 	}
 
-	exec(msg, { role, color }) {
+	async exec(msg, { role, color }) {
+		await msg.guild.members.fetch();
 		if (!role) {
 			return msg.util.send(`✘ No target provided, please provide a valid role.`);
 		}
