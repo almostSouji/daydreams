@@ -1,6 +1,6 @@
 {
   "name": "daydreams",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "Daydreams...",
   "license": "UNLICENSED",
   "dependencies": {
@@ -16,6 +16,7 @@
     "query-string": "^6.4.0",
     "sequelize": "^4.39.0",
     "winston": "^3.1.0",
+    "xivapi-js": "^0.2.1"
   },
   "devDependencies": {
     "eslint": "^5.4.0",
@@ -27,5 +28,6 @@
   "scripts": {
     "startcai": "cd src/cai & node bot.js",
     "startcel": "cd src/cel & node bot.js",
+    "startxiv": "cd src/xiv & node bot.js"
   }
 }

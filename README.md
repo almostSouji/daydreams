@@ -5,6 +5,7 @@ A Discord bot monorepository
 
 **C.A.I.:** User administration  
 **C.E.L.:** Sandbox administration  
+**X.I.V.:** Final Fantasy XIV lookup
 
 Library: [Discord.js](https://github.com/discordjs/discord.js)   
 Framework: [Akairo](https://github.com/1Computer1/discord-akairo)   
@@ -19,3 +20,8 @@ Artwork by [BEEPLE](https://www.beeple-crap.com/vjloops)
 - Set up PostgreSQL
 - Create a `.env` file in the format of the bots respective `.env.example` files
 - Run `npm start_cai` and/or `npm start_cel` to start the bot(s)
+
+# Bot Specific Dependencies
+ℹ *You can leave these out, if you do not use this specific bot*
+
+**X.I.V:** `xivapi-js`

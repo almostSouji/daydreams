@@ -3,6 +3,15 @@ const fetch = require('node-fetch');
 
 module.exports = {
 	/**
+	 * Returns the first key in the provided object where the value satisfies the provided predicate
+	 * @param {Object} object // Object to check on
+	 * @param {Function} predicate // Function to check values against
+	 * @returns {string} Key
+	 */
+	getKeyByValue(object, predicate) {
+		return Object.keys(object).find(key => predicate(object[key]));
+	},
+	/**
 	* Returns the status emoji for provided member, results in an alternative if the bot does not have emoji permissions
 	* @param {client} client Bot client
 	* @param {string} status Status to get the emoji or altternative for
