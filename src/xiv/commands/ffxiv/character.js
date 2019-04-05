@@ -44,7 +44,7 @@ class CharacterCommand extends Command {
 			companyString += `\nFree Company: [${fc.Name} [${fc.Tag}]](https://eu.finalfantasyxiv.com/lodestone/freecompany/${char.FreeCompanyId} 'view  ${fc.Name} [${fc.Tag}] on the Lodestone')`;
 		}
 
-		const embed = new XivEmbed()
+		const embed = new XivEmbed(char.ParseDate)
 			.attachFiles([{ attachment: char.Avatar, name: 'avatar.jpg' }])
 			.setAuthor(`${char.Name} on ${char.Server} (${datacenter})`, this.client.xivapi + classOrJob.Icon, `https://eu.finalfantasyxiv.com/lodestone/character/${char.ID}/`)
 			.addField('Character Information', infoString)
@@ -65,8 +65,9 @@ class CharacterCommand extends Command {
 			if (!char) {
 				return msg.util.send(`✘ No information found for server: \`${serverOrID}\`, name: \`${name}\``);
 			}
-			await fetching.delete();
-			return msg.util.send('', await this.buildInfoEmbed(char));
+
+			await msg.util.send('', await this.buildInfoEmbed(char));
+			return fetching.delete();
 		} catch (err) {
 			if (['invalid arguments', 'missing name'].includes(err.message)) {
 				return msg.util.send('✘ Invalid arguments, please use a valid character ID or `<server> <name> <surname>` combination ');

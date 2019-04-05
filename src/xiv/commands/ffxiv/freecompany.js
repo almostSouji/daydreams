@@ -46,7 +46,7 @@ class FreeCompanyCommand extends Command {
 			infoString += `\nRecruitment: Open (seeking: ${seeking.map(s => s.Name).join(', ')})`;
 		}
 
-		const embed = new XivEmbed()
+		const embed = new XivEmbed(fc.ParseDate)
 			.attachFiles([{ attachment: fc.Crest[fc.Crest.length - 1], name: 'crest.jpg' }])
 			.setAuthor(`${fc.Name} [${fc.Tag}] on ${fc.Server} (${datacenter})`, fc.Crest[fc.Crest.length - 1], `https://eu.finalfantasyxiv.com/lodestone/freecompany/${fc.ID}/`)
 			.addField('Company Information', infoString)
@@ -71,8 +71,8 @@ class FreeCompanyCommand extends Command {
 			if (!fc) {
 				return msg.util.send(`✘ No information found for server: \`${serverOrID}\`, name: \`${name}\``);
 			}
-			await fetching.delete();
-			return msg.util.send('', this.buildInfoEmbed(fc));
+			await msg.util.send('', this.buildInfoEmbed(fc));
+			return fetching.delete();
 		} catch (err) {
 			if (['invalid arguments', 'missing name'].includes(err.message)) {
 				return msg.util.send('✘ Invalid arguments, please use a valid free company ID or `<server> <name>` combination ');
