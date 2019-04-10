@@ -74,11 +74,14 @@ class FreeCompanyCommand extends Command {
 			await msg.util.send('', this.buildInfoEmbed(fc));
 			return fetching.delete();
 		} catch (err) {
+			if (err.message === 'invalid server') {
+				return msg.util.send('✘ Invalid server name, please use a valid free company ID or `<server> <name>` combination');
+			}
 			if (['invalid arguments', 'missing name'].includes(err.message)) {
-				return msg.util.send('✘ Invalid arguments, please use a valid free company ID or `<server> <name>` combination ');
+				return msg.util.send('✘ Invalid arguments, please use a valid free company ID or `<server> <name>` combination');
 			}
 			if (err.message === 'no parameters') {
-				return msg.util.send('✘ No arguments given, please use a valid free company ID or `<server> <name>` combination ');
+				return msg.util.send('✘ No arguments given, please use a valid free company ID or `<server> <name>` combination');
 			}
 			throw err;
 		}

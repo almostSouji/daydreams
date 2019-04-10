@@ -26,6 +26,9 @@ class DataResolver {
 				if (!name) {
 					return Promise.reject(new Error('missing name'));
 				}
+				if (!this.xiv.resources.servers.find(s => s.toLowerCase() === serverOrID.toLowerCase())) {
+					return Promise.reject(new Error('invalid server'));
+				}
 				try {
 					const { Results } = await this.xiv.character.search(name, {
 						page: 1,
@@ -68,6 +71,9 @@ class DataResolver {
 			if (e.statusCode === 406) {
 				if (!name) {
 					return Promise.reject(new Error('missing name'));
+				}
+				if (!this.xiv.resources.servers.find(s => s.toLowerCase() === serverOrID.toLowerCase())) {
+					return Promise.reject(new Error('invalid server'));
 				}
 				try {
 					const { Results } = await this.xiv.freecompany.search(name, {

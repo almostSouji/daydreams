@@ -69,11 +69,14 @@ class CharacterCommand extends Command {
 			await msg.util.send('', await this.buildInfoEmbed(char));
 			return fetching.delete();
 		} catch (err) {
+			if (err.message === 'invalid server') {
+				return msg.util.send('✘ Invalid server name, please use a valid character ID or `<server> <name> <surname>` combination');
+			}
 			if (['invalid arguments', 'missing name'].includes(err.message)) {
-				return msg.util.send('✘ Invalid arguments, please use a valid character ID or `<server> <name> <surname>` combination ');
+				return msg.util.send('✘ Invalid arguments, please use a valid character ID or `<server> <name> <surname>` combination');
 			}
 			if (err.message === 'no parameters') {
-				return msg.util.send('✘ No arguments given, please use a valid character ID or `<server> <name> <surname>` combination ');
+				return msg.util.send('✘ No arguments given, please use a valid character ID or `<server> <name> <surname>` combination');
 			}
 			throw err;
 		}
