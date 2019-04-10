@@ -55,7 +55,7 @@ class FreeCompanyCommand extends Command {
 			embed.setDescription(`\`${fc.Slogan}\``);
 		}
 		if (fc.Estate) {
-			let estateString = `Name: ${fc.Estate.Name}\nPlot: ${fc.Estate.Plot}`;
+			let estateString = `Name: ${fc.Estate.Name}\n${fc.Estate.Plot}`;
 			if (fc.Estate.Greeting && fc.Estate.Greeting !== '-') {
 				estateString += `\nGreeting: \`${fc.Estate.Greeting}\``;
 			}

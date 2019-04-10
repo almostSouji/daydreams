@@ -53,7 +53,7 @@ class CharacterCommand extends Command {
 			embed.setDescription(`\`${char.Bio}\``);
 		}
 		if (companyString.length) {
-			embed.addField('Company Information', companyString);
+			embed.addField('Affiliations', companyString);
 		}
 		return embed.applySpacers().shorten();
 	}
