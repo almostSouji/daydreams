@@ -3,12 +3,29 @@ const { Util: ddUtil } = require('../../../daydream');
 const XivEmbed = require('../../structures/XivdbEmbed.js');
 const { stripIndents } = require('common-tags');
 
+const gearSort = {
+	'MainHand': 0,
+	'OffHand': 1,
+	'Head': 2,
+	'Body': 3,
+	'Hands': 4,
+	'Waist': 5,
+	'Legs': 6,
+	'Feet:': 7,
+	'Earrings': 8,
+	'Necklace': 9,
+	'Bracelets': 10,
+	'Ring1': 11,
+	'Ring2': 12,
+	'SoulCrystal': 13
+};
+
 class CharacterCommand extends Command {
 	constructor() {
 		super('character', {
 			aliases: ['character', 'char', 'find', 'charinfo', 'ffxivchar', 'xivchar'],
 			description: {
-				content: 'Display FFXIV character information based on character id or server and name',
+				content: 'Display FFXIV character information based on character id or server and name (`--gear` to display current equipment, `--stats` to show relevant attributes)',
 				usage: '<id> | <server> <forename> <surname>'
 			},
 			editable: false,
@@ -20,12 +37,23 @@ class CharacterCommand extends Command {
 				{
 					id: 'name',
 					match: 'rest'
+				},
+				{
+					id: 'showstats',
+					match: 'flag',
+					flag: ['--stats', '--s', '--showstats']
+				},
+				{
+					id: 'showgear',
+					match: 'flag',
+					flag: ['--gear', '--g', '--showgear', '--attributes']
 				}
 			]
 		});
 	}
 
-	async buildInfoEmbed(char) {
+
+	async buildInfoEmbed(char, showstats, showgear) {
 		const datacenter = ddUtil.getKeyByValue(this.client.xiv.resources.datacenters, v => v.includes(char.Server));
 		const classOrJob = char.GearSet.Gear.SoulCrystal ? char.ActiveClassJob.Job : char.ActiveClassJob.Class;
 		const infoString = stripIndents`
@@ -55,10 +83,22 @@ class CharacterCommand extends Command {
 		if (companyString.length) {
 			embed.addField('Affiliations', companyString);
 		}
+		const gs = char.GearSet;
+		if (showstats) {
+			embed.addField('Stats', gs.Attributes.map(a => `${a.Attribute.Name}: ${a.Value}`).join(' | '));
+		}
+		if (showgear) {
+			const sortedGearKeys = Object.keys(gs.Gear).sort((a, b) => gearSort[a] - gearSort[b]);
+			const gear = sortedGearKeys.map(key => {
+				const g = gs.Gear[key];
+				return `**${key}**: ${g.Item.Name}${g.Materia.length ? ` ${g.Materia.map(() => '•').join(' ')}` : ''}${g.Mirage ? `\nGlamour: (${g.Mirage.Name})` : ''}`;
+			});
+			embed.addField('Equipped gear', gear.join('\n'));
+		}
 		return embed.applySpacers().shorten();
 	}
 
-	async exec(msg, { serverOrID, name }) {
+	async exec(msg, { serverOrID, name, showstats, showgear }) {
 		const fetching = await msg.util.send('Fetching information...');
 		try {
 			const char = await this.client.xivresolver.resolveCharacter(serverOrID, name);
@@ -66,7 +106,7 @@ class CharacterCommand extends Command {
 				return msg.util.send(`✘ No information found for server: \`${serverOrID}\`, name: \`${name}\``);
 			}
 
-			await msg.util.send('', await this.buildInfoEmbed(char));
+			await msg.util.send('', await this.buildInfoEmbed(char, showstats, showgear));
 			return fetching.delete();
 		} catch (err) {
 			if (err.message === 'invalid server') {
