@@ -34,7 +34,10 @@ class DocsCommand extends Command {
 
 	async exec(msg, { query, force }) {
 		query = query.split(' ');
-		const source = sources.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
+		let source = sources.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
+		if (source === '11.4-dev') {
+			source = `https://raw.githubusercontent.com/discordjs/discord.js/docs/11.4-dev.json`;
+		}
 		const queryString = qs.stringify({ src: source, q: query.join(' '), force });
 		const res = await fetch(`https://djsdocs.sorta.moe/v2/embed?${queryString}`);
 		const embed = await res.json();
