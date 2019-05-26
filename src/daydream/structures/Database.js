@@ -5,7 +5,6 @@ const sequelize = new Sequelize(
 	{
 		dialect: 'postgres',
 		logging: () => { },
-		operatorsAliases: false,
 		define: { timestamps: false }
 	}
 );
