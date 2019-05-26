@@ -4,7 +4,7 @@ const qs = require('query-string');
 
 // command by iCrawl @https://github.com/Naval-Base/yukikaze
 
-const sources = ['stable', 'master', 'rpc', 'commando', 'akairo', 'akairo-master'];
+const sources = ['stable', 'master', 'rpc', 'commando', 'akairo', 'akairo-master', '11.5-dev'];
 class DocsCommand extends Command {
 	constructor() {
 		super('docs', {
@@ -35,8 +35,8 @@ class DocsCommand extends Command {
 	async exec(msg, { query, force }) {
 		query = query.split(' ');
 		let source = sources.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
-		if (source === '11.4-dev') {
-			source = `https://raw.githubusercontent.com/discordjs/discord.js/docs/11.4-dev.json`;
+		if (source === '11.5-dev') {
+			source = `https://raw.githubusercontent.com/discordjs/discord.js/docs/11.5-dev.json`;
 		}
 		const queryString = qs.stringify({ src: source, q: query.join(' '), force });
 		const res = await fetch(`https://djsdocs.sorta.moe/v2/embed?${queryString}`);
