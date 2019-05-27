@@ -4,7 +4,8 @@ const Embed = require('../../structures/DaydreamEmbed');
 const fetch = require('node-fetch');
 const dateFns = require('date-fns');
 const Discord = require('discord.js');
-const { displayStatus, toTitleCase, groupBy, postHaste } = require('../../util');
+const Daydream = require('../../');
+const { displayStatus, toTitleCase, groupBy, postHaste, chunkArray } = require('../../util');
 const util = require('util');
 /* eslint-enable no-unused-vars */
 

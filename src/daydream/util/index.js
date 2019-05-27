@@ -49,6 +49,12 @@ module.exports = {
 		return c;
 	},
 
+	/**
+	 * Post a string to paste.nomsy.net
+	 * @param {string} code String to post
+	 * @param {string} lang Code language to use
+	 * @returns {string} Link to the paste
+	 */
 	postHaste: async (code, lang = '') => {
 		try {
 			if (code.length > 400000) {
@@ -63,5 +69,13 @@ module.exports = {
 		} catch (err) {
 			throw err;
 		}
-	}
+	},
+
+	/**
+	 * Divide array into chunks
+	 * @param {Array} list Array to devide into chunks
+	 * @param {int} chunksize Elements per chunk
+	 * @returns {Array} Array of chunks
+	 */
+	chunkArray: (list, chunksize) => new Array(Math.ceil(list.length / chunksize)).fill().map(() => list.splice(0, chunksize))
 };
