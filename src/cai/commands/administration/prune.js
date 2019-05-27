@@ -1,7 +1,4 @@
 const { Command, Argument } = require('discord-akairo');
-const { stripIndents } = require('common-tags');
-const { format } = require('date-fns');
-const { User } = require('discord.js');
 const { Util } = require('../../../daydream');
 
 
