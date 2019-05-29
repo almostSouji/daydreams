@@ -27,6 +27,16 @@ sequelize.define('settings', {
 		type: Sequelize.JSON
 	}
 });
+
+sequelize.define('blacklist', {
+	user: {
+		type: Sequelize.TEXT,
+		primaryKey: true
+	},
+	reason: {
+		type: Sequelize.TEXT
+	}
+});
 /* eslint-enable camelcase */
 
 module.exports = sequelize;

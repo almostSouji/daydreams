@@ -5,10 +5,13 @@ class BlacklistInhibitor extends Inhibitor {
 		super('blacklist', { reason: 'blacklist' });
 	}
 
-	exec(message) {
-		const blacklist = [];
-
-		return blacklist.includes(message.author.id);
+	async exec(message) {
+		const result = await this.client.db.models.blacklist.findOne({
+			where: {
+				user: message.author.id
+			}
+		});
+		return Boolean(result);
 	}
 }
 

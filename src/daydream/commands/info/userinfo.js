@@ -30,6 +30,11 @@ class UserInfoCommand extends Command {
 					id: 'color',
 					match: 'flag',
 					flag: ['--color', '--c']
+				},
+				{
+					id: 'blacklist',
+					match: 'flag',
+					flag: ['--blacklist', '--bl']
 				}
 			]
 		});
@@ -43,9 +48,8 @@ class UserInfoCommand extends Command {
 		return toTitleCase(ref.presence.status);
 	}
 
-	async buildInfoEmbed(invoke, ref, permissions, color) {
+	async buildInfoEmbed(invoke, ref, permissions, color, blacklist) {
 		const user = ref instanceof GuildMember ? ref.user : ref;
-
 		const embed = new DaydreamEmbed()
 			.setThumbnail(user.displayAvatarURL())
 			.addField(`${user.bot ? 'Bot' : 'User'} Information`, stripIndents`
@@ -130,14 +134,21 @@ class UserInfoCommand extends Command {
 				.addField('Bot Information', botInfoString, false)
 				.setFooter(`Coded with 🍵 by ${creator.username}`, creator.displayAvatarURL());
 		}
-
+		if (blacklist) {
+			const result = await this.client.db.models.blacklist.findOne({
+				where: {
+					user: ref.id
+				}
+			});
+			embed.addField('Blacklist status:', result ? `\`❌\` Blacklisted${result.reason ? ` with reason: \`${result.reason}\`` : ''}` : '`✅` Not blacklisted');
+		}
 
 		return embed.applySpacers().shorten();
 	}
 
-	async exec(msg, { target, permissions, color }) {
+	async exec(msg, { target, permissions, color, blacklist }) {
 		if (target instanceof GuildMember || target instanceof User) {
-			return msg.util.send(await this.buildInfoEmbed(msg, target, permissions, color));
+			return msg.util.send(await this.buildInfoEmbed(msg, target, permissions, color, blacklist));
 		}
 
 		try {
@@ -146,7 +157,7 @@ class UserInfoCommand extends Command {
 				queryFetch = await msg.guild.members.fetch(target);
 			}
 			if (queryFetch.size) {
-				return msg.util.send('', await this.buildInfoEmbed(msg, queryFetch.first, permissions, color));
+				return msg.util.send('', await this.buildInfoEmbed(msg, queryFetch.first, permissions, color, blacklist));
 			}
 			throw new Error('no member');
 		} catch (err) {
