@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
 	process.env.DATABASE_LOGIN,
 	{
-		dialect: 'postgres',
+		dialect: process.env.DATABASE_DIALECT,
 		logging: () => { },
 		define: { timestamps: false }
 	}
