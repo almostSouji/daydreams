@@ -53,6 +53,12 @@ class DaydreamClient extends AkairoClient {
 		this.db = database;
 		this.config = config;
 		this.hubGuildID = config.hubGuild;
+
+		this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
+		this.commandHandler.useListenerHandler(this.listenerHandler);
+		this.commandHandler.loadAll();
+		this.listenerHandler.loadAll();
+		this.inhibitorHandler.loadAll();
 	}
 
 	get hubGuild() {
@@ -61,6 +67,7 @@ class DaydreamClient extends AkairoClient {
 
 	async start() {
 		await this.db.sync();
+		await this.guildSettings.init();
 		return this.login(this.config.token);
 	}
 }

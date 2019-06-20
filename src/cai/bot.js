@@ -34,5 +34,4 @@ process
 	 client.logger.error(`Unhandled Promise rejection:\n${err.stack}`);
 	});
 
-client.init();
 client.start();
