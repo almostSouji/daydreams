@@ -44,6 +44,7 @@ class DocsCommand extends Command {
 		if (!embed) {
 			return msg.util.reply('Could not find requested content.');
 		}
+
 		if (msg.channel.type === 'dm' || !msg.channel.permissionsFor(msg.guild.me).has(['ADD_REACTIONS', 'MANAGE_MESSAGES'], false)) {
 			return msg.util.send({ embed });
 		}
@@ -51,18 +52,17 @@ class DocsCommand extends Command {
 		m.react('🗑');
 		let react;
 		try {
-			react = await msg.awaitReactions(
+			react = await m.awaitReactions(
 				(reaction, user) => reaction.emoji.name === '🗑' && user.id === msg.author.id,
-				{ max: 1, time: 5000, errors: ['time'] }
+				{ max: 1, time: 10000, errors: ['time'] }
 			);
+			react.first().message.delete();
 		} catch (error) {
 			m.reactions.removeAll();
-
-			return msg;
+			return m;
 		}
-		react.first().message.delete();
 
-		return msg;
+		return m;
 	}
 }
 module.exports = DocsCommand;
