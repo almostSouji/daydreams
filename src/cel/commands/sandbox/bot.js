@@ -4,11 +4,6 @@ const { DaydreamEmbed } = require('../../../daydream');
 const { stripIndents } = require('common-tags');
 const { format, formatDistanceStrict } = require('date-fns');
 
-const RESPONSESA = [
-	'Invite for `$(user)` generated:',
-	'Creating access slot for `$(user)`:',
-	'Access validation for `$(user)`:'
-];
 const RESPONSESB = [
 	'Target `$(user)` is not a bot.',
 	'Unable to generate invite for `$(user)`.'
@@ -68,8 +63,8 @@ class BotInviteCommand extends Command {
 					Tag: \`${user.tag}\`
 					Created: ${formatDistanceStrict(user.createdAt, Date.now(), { addSuffix: true })} (${format(user.createdAt, this.client.config.dateFormat)})`, true)
 			.addField('Invite', `<https://discordapp.com/oauth2/authorize?client_id=${user.id}&permissions=${permissions}&scope=bot>`)
-			.addField('Permissions', new Permissions(permissions).toArray(false).map(perm => `\`${perm}\``)
-				.join(', '));
+			.addField('Permissions', `/u200B${new Permissions(permissions).toArray(false).map(perm => `\`${perm}\``)
+				.join(', ')}`);
 		msg.util.send('', { embed });
 	}
 }
