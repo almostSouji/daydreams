@@ -3,8 +3,8 @@ const { join } = require('path');
 const Sequelize = require('sequelize');
 
 class CaiClient extends Client {
-	constructor() {
-		super();
+	constructor(config) {
+		super(config);
 		this.db.define('rolestates', {
 			role: Sequelize.TEXT,
 			guild: Sequelize.TEXT,

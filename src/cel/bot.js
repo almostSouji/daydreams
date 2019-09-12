@@ -1,7 +1,7 @@
 require('dotenv').config();
 const CelClient = require('./client/CelClient');
 
-const client = new CelClient({
+const vars = {
 	owner: process.env.OWNERS.split(','),
 	token: process.env.TOKEN,
 	prefix: process.env.PREFIX,
@@ -26,7 +26,8 @@ const client = new CelClient({
 	colors: {
 		defaultEmbed: parseInt(process.env.EMBED_DEFAULT_COLOR, 10)
 	}
-});
+};
+const client = new CelClient(vars);
 
 client
 	.on('error', err => client.logger.error(`Error:\n${err.stack}`))
@@ -35,5 +36,4 @@ client
 process
 	.on('error', err => client.logger.error(`Unhandled Promise rejection:\n${err.stack}`));
 
-client.init();
 client.start();

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const CaiClient = require('./client/CaiClient');
 
-const client = new CaiClient({
+const vars = {
 	owner: process.env.OWNERS.split(','),
 	token: process.env.TOKEN,
 	prefix: process.env.PREFIX,
@@ -21,7 +21,8 @@ const client = new CaiClient({
 		logDelete: parseInt(process.env.EMBED_DELETE_COLOR, 10),
 		logEdit: parseInt(process.env.EMBED_EDIT_COLOR, 10)
 	}
-});
+};
+const client = new CaiClient(vars);
 
 client
 	.on('error', err => client.logger.error(`Error:\n${err.stack}`))

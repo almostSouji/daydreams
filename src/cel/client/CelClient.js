@@ -3,8 +3,8 @@ const { join } = require('path');
 const { readdirSync } = require('fs');
 
 class CelClient extends Client {
-	constructor() {
-		super();
+	constructor(config) {
+		super(config);
 		this.commandHandler.loadAll(join(__dirname, '..', 'commands'));
 		this.listenerHandler.loadAll(join(__dirname, '..', 'listeners'));
 	}
