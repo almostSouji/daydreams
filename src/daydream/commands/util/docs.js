@@ -11,7 +11,7 @@ class DocsCommand extends Command {
 			aliases: ['docs', 'c', 'doc'],
 			description: {
 				content: 'Display Discord.js documentation for query, (`--private` to show private properties in lists)',
-				usage: '<query>'
+				usage: '<query> [--private]'
 			},
 			clientPermissions: ['EMBED_LINKS'],
 			editable: true,
