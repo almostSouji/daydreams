@@ -1,5 +1,6 @@
 const { Command, Argument } = require('discord-akairo');
 const { Util } = require('../../../daydream');
+const { Snowflake } = require('discord.js');
 
 
 class PruneCommand extends Command {
@@ -52,32 +53,6 @@ class PruneCommand extends Command {
 		}
 		const pinnedMessages = (await msg.channel.messages.fetchPinned()).keyArray();
 
-		const filtered = [];
-		let alreadyfetched = 0;
-		let fetching = true;
-		let last = '';
-		while (filtered.length < number && fetching) {
-			const fetch = number - filtered.length;
-			const options = { limit: fetch > 100 ? 100 : fetch };
-			if (last) {
-				options.before = last;
-			}
-			const messages = await msg.channel.messages.fetch(options);
-			alreadyfetched += messages.size;
-			for (const m of messages.values()) {
-				if (msg.id === m.id) continue;
-				if (!pins && pinnedMessages.includes(m.id)) continue;
-				if (bots && !m.author.bot) continue;
-				if (user && m.author.id !== user.id) continue;
-				filtered.push(m.id);
-			}
-			if (messages.last()) {
-				last = messages.last().id;
-			}
-			if (alreadyfetched >= number || !messages.size || number <= 100) {
-				fetching = false;
-			}
-		}
 		let deleteString = '✓ Deleting messages';
 		if (bots) {
 			deleteString += ' by bots';
@@ -88,14 +63,37 @@ class PruneCommand extends Command {
 		if (pins) {
 			deleteString += ' including pins';
 		}
-		await msg.util.send(`${deleteString}...`);
-		const chunks = Util.chunkArray(filtered, 100);
-		let pruned = 0;
-		for (const c of chunks) {
-			console.log(c);
-			pruned += (await msg.channel.bulkDelete(c, true)).size;
+		const deleteMessage = await msg.util.send(`${deleteString}...`);
+		const filtered = [];
+		let fetchedAmount = 0;
+		let last = '';
+		while (fetchedAmount < number) {
+			const fetch = number - fetchedAmount;
+			const options = { limit: fetch >= 98 ? 100 : fetch + 2 };
+			if (last) {
+				options.before = last;
+			}
+			const messages = await msg.channel.messages.fetch(options);
+			fetchedAmount += messages.size;
+			for (const [_, m] of messages) {
+				if (msg.id === m.id) continue;
+				if (m.id === deleteMessage.id) continue;
+				if (!pins && pinnedMessages.includes(m.id)) continue;
+				if (bots && !m.author.bot) continue;
+				if (user && m.author.id !== user.id) continue;
+				filtered.push(m.id);
+			}
+			if (messages.last()) {
+				last = messages.last().id;
+			}
 		}
-		return msg.util.send(`✓ Deleted ${pruned}/${number} message${number > 1 ? 's' : ''}${bots ? ' by bots' : ''}${user ? ` by \`${user.tag}\`` : ''}${pins ? ' including pins' : ''}`);
+
+		const willPrune = filtered.filter(id => Date.now() - Snowflake.deconstruct(id).date.getTime() < 1209600000).length;
+		const chunks = Util.chunkArray(filtered, 100);
+		for (const c of chunks) {
+			await msg.channel.bulkDelete(c, true);
+		}
+		return msg.util.send(`✓ Deleted ${willPrune}/${number} scanned message${number > 1 ? 's' : ''}${bots ? ' (by bots)' : ''}${user ? ` (by \`${user.tag}\`)` : ''}${pins ? ' including pins' : ''}`);
 	}
 }
 module.exports = PruneCommand;
