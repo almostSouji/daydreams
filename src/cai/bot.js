@@ -26,12 +26,10 @@ const client = new CaiClient(vars);
 
 client
 	.on('error', err => client.logger.error(`Error:\n${err.stack}`))
-	.on('warn', warn => client.logger.warn(`Warning:\n${warn}`))
-	.on('ratelimit', console.log);
+	.on('warn', warn => client.logger.warn(`Warning:\n${warn}`));
 
 process
 	.on('error', err => {
-		console.log('err', err);
 	 client.logger.error(`Unhandled Promise rejection:\n${err.stack}`);
 	});
 
