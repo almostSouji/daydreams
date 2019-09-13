@@ -81,7 +81,6 @@ class DataResolver {
 					page: 1,
 					server
 				});
-				console.log(Results);
 				if (!Results.length) {
 					return Promise.resolve(null);
 				}
