@@ -10,7 +10,7 @@ class DocsCommand extends Command {
 		super('docs', {
 			aliases: ['docs', 'c', 'doc'],
 			description: {
-				content: 'Display Discord.js documentation for query',
+				content: 'Display Discord.js documentation for query, (`--private` to show private properties in lists)',
 				usage: '<query>'
 			},
 			clientPermissions: ['EMBED_LINKS'],
@@ -24,6 +24,11 @@ class DocsCommand extends Command {
 					type: 'lowercase'
 				},
 				{
+					id: 'includePrivate',
+					match: 'flag',
+					flag: ['--private', '--p', '-p']
+				},
+				{
 					id: 'force',
 					match: 'flag',
 					flag: ['--force', '--f', '-f']
@@ -32,13 +37,13 @@ class DocsCommand extends Command {
 		});
 	}
 
-	async exec(msg, { query, force }) {
+	async exec(msg, { query, includePrivate, force }) {
 		query = query.split(' ');
 		let source = sources.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
 		if (source === '11.5-dev') {
 			source = `https://raw.githubusercontent.com/discordjs/discord.js/docs/11.5-dev.json`;
 		}
-		const queryString = qs.stringify({ src: source, q: query.join(' '), force });
+		const queryString = qs.stringify({ src: source, q: query.join(' '), force, includePrivate });
 		const res = await fetch(`https://djsdocs.sorta.moe/v2/embed?${queryString}`);
 		const embed = await res.json();
 		if (!embed) {
