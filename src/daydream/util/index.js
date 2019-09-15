@@ -3,6 +3,14 @@ const fetch = require('node-fetch');
 
 module.exports = {
 	/**
+	 * Waits for the provided number of milliseconds
+	 * @param {number} ms Amount of ms to wait for
+	 * @returns {Promise<NodeJS.Timeout>} Promise to await
+	 */
+	sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	},
+	/**
 	 * Returns the first key in the provided object where the value satisfies the provided predicate
 	 * @param {Object} object // Object to check on
 	 * @param {Function} predicate // Function to check values against

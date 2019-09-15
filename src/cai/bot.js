@@ -20,6 +20,10 @@ const vars = {
 		defaultEmbed: parseInt(process.env.EMBED_DEFAULT_COLOR, 10),
 		logDelete: parseInt(process.env.EMBED_DELETE_COLOR, 10),
 		logEdit: parseInt(process.env.EMBED_EDIT_COLOR, 10)
+	},
+	reactionCommands: {
+		[process.env.REACTION_COMMAND_CHANNEL_MUTE]: 'channel_mute',
+		[process.env.REACTION_COMMAND_CHECK_MEMBER]: 'check_member'
 	}
 };
 const client = new CaiClient(vars);
