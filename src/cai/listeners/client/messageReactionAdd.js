@@ -33,7 +33,7 @@ class MessageReactionAddListener extends Listener {
 		}
 		if (reactionCommand === 'check_member') {
 			if (!channel.type === 'text') return;
-			if (!channel.permissionsFor(this.client.user).has(['MAMANAGE_MESSAGES', 'ADD_REACTIONS', 'VIEW_CHANNEL'])) return;
+			if (!channel.permissionsFor(this.client.user).has(['MANAGE_MESSAGES', 'ADD_REACTIONS', 'VIEW_CHANNEL'])) return;
 			try {
 				await message.guild.members.fetch(message.author);
 				await message.react('✔');
