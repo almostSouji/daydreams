@@ -9,6 +9,7 @@ class PrefixCommand extends Command {
 				content: 'Change prefix, `--reset` to reset to default',
 				usage: '[new prefix]'
 			},
+			channel: 'guild',
 			args: [
 				{
 					id: 'prefix',
