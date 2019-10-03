@@ -118,7 +118,7 @@ class SandboxBuildCommand extends Command {
 			await guild.channels.create(`nsfw${i}`, { type: 'text', nsfw: true, parent: textCategory });
 		}
 
-		await guild.defaultRole.setPermissions([
+		await guild.roles.everyone.setPermissions([
 			'VIEW_CHANNEL',
 			'SEND_MESSAGES',
 			'EMBED_LINKS',
