@@ -37,7 +37,7 @@ class SandboxBuildCommand extends Command {
 				{
 					'id': 'categories',
 					'match': 'option',
-					'flag': ['--categories', '--cat', '--c'],
+					'flag': ['--categories', '--cat', '--category', '--c'],
 					'type': 'number',
 					'default': 0
 				},
