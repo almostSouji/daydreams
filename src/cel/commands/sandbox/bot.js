@@ -63,7 +63,7 @@ class BotInviteCommand extends Command {
 					Tag: \`${user.tag}\`
 					Created: ${formatDistanceStrict(user.createdAt, Date.now(), { addSuffix: true })} (${format(user.createdAt, this.client.config.dateFormat)})`, true)
 			.addField('Invite', `<https://discordapp.com/oauth2/authorize?client_id=${user.id}&permissions=${permissions}&scope=bot>`)
-			.addField('Permissions', `/u200B${new Permissions(permissions).toArray(false).map(perm => `\`${perm}\``)
+			.addField('Permissions', `\u200B${new Permissions(permissions).toArray(false).map(perm => `\`${perm}\``)
 				.join(', ')}`);
 		msg.util.send('', { embed });
 	}
