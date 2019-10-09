@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { Command } = require('discord-akairo');
 const { DaydreamEmbed } = require('../../index');
+const { MESSAGES, XKCD } = require('../../util/constants');
 
 class XkcdCommand extends Command {
 	constructor() {
@@ -23,14 +24,14 @@ class XkcdCommand extends Command {
 	}
 
 	async buildEmbed({ num, title, img, alt }, guild) {
-		const explainURL = `https://www.explainxkcd.com/wiki/index.php/${num}`;
+		const explainURL = `${XKCD.BASE_URL_EXPLAIN}${num}`;
 		const res = await fetch(explainURL);
 
 		const embed = new DaydreamEmbed()
 			.setTitle(`xkcd #${num}`)
 			.setDescription(`Title: ${title}${res.status === 200 ? `\nExplain: ${explainURL}` : ''}`)
 			.setImage(img)
-			.setURL(`https://xkcd.com/${num}/`)
+			.setURL(`${XKCD.BASE_URL}${num}/`)
 			.setFooter(alt);
 		if (!embed.color && guild && guild.me.displayColor) {
 			embed.setColor(guild.me.displayColor);
@@ -40,17 +41,17 @@ class XkcdCommand extends Command {
 	}
 
 	async exec(msg, { n, explain }) {
-		const url = `http://xkcd.com/${n ? `${n}/` : ''}info.0.json`;
+		const url = `${XKCD.BASE_URL}${n ? `${n}/` : ''}info.0.json`;
 		try {
 			const res = await fetch(url);
 			if (res.status === 404) {
 				if (!n) {
-					return msg.util.send('✘ xkcd not found.');
+					return msg.util.send(MESSAGES.COMMANDS.XKCD.ERRORS.NOT_FOUND);
 				}
 				if (msg.util.lastResponse) {
 					msg.util.lastResponse.reactions.removeAll();
 				}
-				return msg.util.send(`✘ Invalid xkcd: #${n}`);
+				return msg.util.send(MESSAGES.COMMANDS.XKCD.ERRORS.INVALID(n));
 			}
 			const json = await res.json();
 			n = json.num;
@@ -74,8 +75,8 @@ class XkcdCommand extends Command {
 				await answer.reactions.removeAll();
 			}
 		} catch (err) {
-			this.client.logger.warn(`xkcd error: ${err}`);
-			return msg.util.send('✘ Something went wrong.');
+			this.client.logger.warn(MESSAGES.LOGGER('[XKCD ERROR]', err));
+			return msg.util.send(MESSAGES.ERRORS.CATCH);
 		}
 	}
 }

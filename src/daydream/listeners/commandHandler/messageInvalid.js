@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class MessageInvalidListener extends Listener {
 	constructor() {
@@ -24,11 +25,15 @@ class MessageInvalidListener extends Listener {
 			const userQuery = await this.client.db.models.users.findOne({ where: { channel: msg.channel.id } });
 			if (!userQuery) return;
 
-			const user = this.client.users.get(userQuery.id);
-			if (!user) {
-				return msg.channel.send(`${this.client.config.emojis.crest} Recipient not found`);
+			try {
+				const user = await this.client.users.fetch(userQuery.id);
+				if (!user) {
+					throw new Error('invalid user');
+				}
+				user.relayMessage(msg).catch(() => msg.channel.send(MESSAGES.LISTENERS.MESSAGE_INVALID.NO_CONNECTION(this.client.config.emojis.crest, user)));
+			} catch (error) {
+				return msg.channel.send(MESSAGES.LISTENERS.MESSAGE_INVALID.NO_RECIPIENT(this.client.config.emojis.crest));
 			}
-			user.relayMessage(msg).catch(() => msg.channel.send(`${this.client.config.emojis.crest} Connection to \`${user.tag}\` could not be established.`));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class MissingPermissionsListener extends Listener {
 	constructor() {
@@ -9,7 +10,11 @@ class MissingPermissionsListener extends Listener {
 	}
 
 	exec(msg, command, type, missing) {
-		msg.util.send(`✘ ${type === 'client' ? 'I' : 'You'} need the permission${missing.length > 1 ? 's' : ''} ${missing.map(p => `\`${p}\``)} to execute the command \`${command}\`.`);
+		const missinFormatted = missing.map(p => `\`${p}\``);
+		if (type === 'client') {
+			return msg.util.send(MESSAGES.LISTENERS.MISSING_PERMISSIONS.BOT(missinFormatted, command.id));
+		}
+		return msg.util.send(MESSAGES.LISTENERS.MISSING_PERMISSIONS.USER(missinFormatted, command.id));
 	}
 }
 

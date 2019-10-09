@@ -2,6 +2,8 @@ const { Command, Argument } = require('discord-akairo');
 const { GuildMember, Message } = require('discord.js');
 const { DaydreamEmbed } = require('../../index');
 const { format } = require('date-fns');
+const { MESSAGES } = require('../../util/constants');
+
 class QuoteCommand extends Command {
 	constructor() {
 		super('quote', {
@@ -57,28 +59,28 @@ class QuoteCommand extends Command {
 				embed.addField(`Version ${format(m.editedAt || m.createdAt, 'yyyy/MM/dd/HH:mm:ss')} (UTC)`, m.content);
 			}
 		} else {
-			embed.setDescription(`${message.content}\n[➜](${message.url} 'jump to message')`);
+			embed.setDescription(`${message.content}\n${MESSAGES.COMMANDS.QUOTE.JUMP_LINK(message.url)}`);
 		}
 		return embed.applySpacers().shorten();
 	}
 
 	exec(msg, { qMsg, color, edits }) {
 		if (!qMsg) {
-			return msg.util.send(`✘ No target provided, please provide a valid message ID.`);
+			return msg.util.send(MESSAGES.ERRORS.TARGET('message id'));
 		}
 		if (qMsg instanceof Message) {
 			if (qMsg.channel.type === 'text' && !qMsg.channel.permissionsFor(msg.author).has('VIEW_CHANNEL')) {
-				return msg.util.send(`✘ You don't have permission to quote this message.`);
+				return msg.util.send(MESSAGES.COMMANDS.QUOTE.ERRORS.MISSING_PERMISSIONS);
 			}
 			if (!qMsg.content) {
-				return msg.util.send(`✘ The targeted message does not have any content to quote.`);
+				return msg.util.send(MESSAGES.COMMANDS.QUOTE.ERRORS.NO_CONTENT);
 			}
 			if (qMsg.channel.type === 'text' && !qMsg.channel.permissionsFor(msg.author).has('MANAGE_MESSAGES')) {
 				edits = false;
 			}
 			return msg.util.send('', this.buildInfoEmbed(qMsg, color, edits));
 		}
-		return msg.util.send(`✘ Can not convert \`${qMsg}\` to \`message\``);
+		return msg.util.send(MESSAGES.ERRORS.RESOLVE(qMsg, 'message'));
 	}
 }
 

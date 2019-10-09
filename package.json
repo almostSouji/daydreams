@@ -24,7 +24,10 @@
     "eslint-config-aqua": "^4.3.4"
   },
   "eslintConfig": {
-    "extends": "aqua/node"
+    "extends": "aqua/node",
+    "rules": {
+      "new-cap": "off"
+    }
   },
   "scripts": {
     "startcai": "cd src/cai & node bot.js",

@@ -2,6 +2,7 @@ const { Command } = require('discord-akairo');
 const { stripIndents } = require('common-tags');
 const { toTitleCase } = require('../../util');
 const { DaydreamEmbed } = require('../../index');
+const { MESSAGES } = require('../../util/constants');
 
 class HelpCommand extends Command {
 	constructor() {
@@ -49,19 +50,19 @@ class HelpCommand extends Command {
 		let restrictionString = '';
 		if (ref.ownerOnly) {
 			const check = this.client.isOwner(message.author);
-			restrictionString += `\n${check ? '`✅`' : '`❌`'} Owner only`;
+			restrictionString += `\n${MESSAGES.COMMANDS.HELP.OWNER_ONLY(check)}`;
 		}
 		if (ref.channel === 'guild') {
 			const check = message.channel.type === 'text';
-			restrictionString += `\n${check ? '`✅`' : '`❌`'} Command can only be used in a guild`;
+			restrictionString += `\n${MESSAGES.COMMANDS.HELP.GUILD_ONLY(check)}`;
 		}
 		if (ref.userPermissions) {
 			const check = message.channel.type === 'text' && message.member.permissions.has(ref.userPermissions);
-			restrictionString += `\n${check ? '`✅`' : '`❌`'} User permissions: ${ref.userPermissions.map(e => `\`${e}\``).join(', ')}`;
+			restrictionString += `\n${MESSAGES.COMMANDS.HELP.USER_PERMISSIONS(check, ref.userPermissions.map(e => `\`${e}\``).join(', '))}`;
 		}
 		if (ref.clientPermissions) {
 			const check = message.channel.type === 'text' && message.guild.me.permissions.has(ref.clientPermissions);
-			restrictionString += `\n${check ? '`✅`' : '`❌`'} Bot permissions: ${ref.clientPermissions.map(e => `\`${e}\``).join(', ')}`;
+			restrictionString += `\n${MESSAGES.COMMANDS.HELP.BOT_PERMISSIONS(check, ref.clientPermissions.map(e => `\`${e}\``).join(', '))}`;
 		}
 		const embed = new DaydreamEmbed()
 			.addField('Command Information', idString)
@@ -105,11 +106,10 @@ class HelpCommand extends Command {
 				return true;
 			}).map(e => `\`${e.id}\``).join(', ')}`);
 			return msg.util.send(stripIndents`
-				Your available commands are:
+				${MESSAGES.COMMANDS.HELP.AVAILABLE_COMMANDS_INTRO}
 				${map.join('\n')}
 
-				You can use \`${this.handler.prefix(msg)}${this.id} <commandname>\` to get more information about a command.
-			`);
+				${MESSAGES.COMMANDS.HELP.MORE_INFORMATION(this.handler.prefix(msg), this.id)}`);
 		}
 		msg.util.send('', this.buildInfoEmbed(cmd, msg));
 	}

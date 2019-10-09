@@ -10,6 +10,7 @@ module.exports = {
 	sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	},
+
 	/**
 	 * Returns the first key in the provided object where the value satisfies the provided predicate
 	 * @param {Object} object // Object to check on
@@ -19,6 +20,7 @@ module.exports = {
 	getKeyByValue(object, predicate) {
 		return Object.keys(object).find(key => predicate(object[key]));
 	},
+
 	/**
 	* Returns the status emoji for provided member, results in an alternative if the bot does not have emoji permissions
 	* @param {client} client Bot client

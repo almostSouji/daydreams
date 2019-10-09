@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class CooldownListener extends Listener {
 	constructor() {
@@ -9,7 +10,7 @@ class CooldownListener extends Listener {
 	}
 
 	exec(msg, command, remaining) {
-		msg.util.send(`✘ Try again in ${parseFloat((remaining / 1000).toFixed(2))}s`);
+		msg.util.send(MESSAGES.LISTENERS.COOLDOWN.TRY_AGAIN_IN(parseFloat((remaining / 1000).toFixed(2))));
 	}
 }
 

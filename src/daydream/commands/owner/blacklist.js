@@ -1,4 +1,5 @@
 const { Command, Argument } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class BlacklistCommand extends Command {
 	constructor() {
@@ -25,13 +26,13 @@ class BlacklistCommand extends Command {
 
 	async exec(msg, { target, reason }) {
 		if (!target) {
-			return msg.util.send('✘ Provide a user to blacklist');
+			return msg.util.send(MESSAGES.ERRORS.TARGET('user to blacklist'));
 		}
 		if (typeof target === 'string') {
 			try {
 				target = await this.client.users.fetch(target);
 			} catch (_) {
-				return msg.util.send(`✘ Invalid user: \`${target}\``);
+				return msg.util.send(MESSAGES.ERRORS.RESOLVE(target, 'user'));
 			}
 		}
 		try {
@@ -40,18 +41,18 @@ class BlacklistCommand extends Command {
 					user: target.id
 				}
 			});
-			await msg.util.send(`Are you sure you want to ${result ? 'un' : ''}blacklist \`${target.tag}\` (${target.id})${!result && reason ? ` with reason: \`${reason}\`` : ''}?${result && result.reason ? ` They are blacklisted for the reason: \`${reason}\`.` : ''}`);
+			await msg.util.send(MESSAGES.COMMANDS.BLACKLIST.PROMPT(target, reason, result));
 			const responses = await msg.channel.awaitMessages(m => m.author.id === msg.author.id,
 				{
 					max: 1,
 					time: 10000
 				});
 			if (!responses || responses.size !== 1) {
-				return msg.util.send('✘ Action cancelled.');
+				return msg.util.send(MESSAGES.ERRORS.CANCEL);
 			}
 			const response = responses.first();
 			if (!['y', 'yes'].includes(response.content)) {
-				return msg.util.send('✘ Action cancelled.');
+				return msg.util.send(MESSAGES.ERRORS.CANCEL);
 			}
 			if (result) {
 				await result.destroy();
@@ -61,9 +62,9 @@ class BlacklistCommand extends Command {
 					reason
 				});
 			}
-			return msg.util.send(`✓ ${result ? 'Unb' : 'B'}lacklisted \`${target.tag}\` (${target.id})`);
+			return msg.util.send(MESSAGES.COMMANDS.BLACKLIST.SUCCESS(result, target));
 		} catch (err) {
-			return msg.util.send(`✘ Action cancelled, something went wrong. \`${err}\``);
+			return msg.util.send(MESSAGES.ERRORS.CANCEL_WITH_ERROR(err));
 		}
 	}
 }

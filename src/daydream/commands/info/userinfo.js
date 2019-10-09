@@ -4,6 +4,7 @@ const { stripIndents } = require('common-tags');
 const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict, formatDistance } = require('date-fns');
 const { toTitleCase, displayStatus } = require('../../util');
+const { MESSAGES } = require('../../util/constants');
 
 class UserInfoCommand extends Command {
 	constructor() {
@@ -161,7 +162,7 @@ class UserInfoCommand extends Command {
 			}
 			throw new Error('no member');
 		} catch (err) {
-			return msg.util.send(`✘ Can not convert \`${target}\` to \`user\``);
+			return msg.util.send(MESSAGES.ERRORS.RESOLVE(target, 'user'));
 		}
 	}
 }

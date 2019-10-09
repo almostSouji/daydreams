@@ -3,6 +3,7 @@ const { stripIndents } = require('common-tags');
 const { Channel } = require('discord.js');
 const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict } = require('date-fns');
+const { MESSAGES } = require('../../util/constants');
 
 const { displayStatus, toTitleCase, groupBy } = require('../../util');
 class ChannelInfoCommand extends Command {
@@ -83,7 +84,7 @@ class ChannelInfoCommand extends Command {
 		if (channel instanceof Channel) {
 			return msg.util.send('', this.buildInfoEmbed(channel));
 		}
-		return msg.util.send(`✘ Can not convert \`${channel}\` to \`channel\``);
+		return msg.util.send(MESSAGES.ERRORS.RESOLVE(channel, 'channel'));
 	}
 }
 

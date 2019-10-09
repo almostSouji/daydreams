@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class CommandBlockedListener extends Listener {
 	constructor() {
@@ -10,7 +11,7 @@ class CommandBlockedListener extends Listener {
 
 	exec(msg, command, reason) {
 		if (reason === 'guild') {
-			msg.util.send('✘ This command is not available in direct messages.');
+			msg.util.send(MESSAGES.LISTENERS.COMMAND_BLOCKED.GUILD_ONLY(command.id));
 		}
 	}
 }

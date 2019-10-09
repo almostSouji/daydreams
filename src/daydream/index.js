@@ -6,5 +6,6 @@ module.exports = {
 	DaydreamClient: require('./client/DaydreamClient'),
 	Util: require('./util'),
 	version: require('../../package.json').version,
-	DaydreamEmbed: require('./structures/DaydreamEmbed')
+	DaydreamEmbed: require('./structures/DaydreamEmbed'),
+	Constants: require('./util/constants')
 };

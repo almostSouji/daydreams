@@ -1,4 +1,5 @@
 const { Command, Argument, Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class ReloadCommand extends Command {
 	constructor() {
@@ -29,31 +30,31 @@ class ReloadCommand extends Command {
 			try {
 				await this.client.commandHandler.reloadAll();
 				await this.client.listenerHandler.reloadAll();
-				return msg.util.send('✓ Reloaded all commands and listeners');
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.SUCCESS.ALL);
 			} catch (err) {
-				return msg.util.send(`✘ Could not reload: \`${err}\``);
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.ERRORS.ALL(err));
 			}
 		}
 		if (!commandOrListener) {
-			return msg.util.send(`✘ No target provided, please provide a valid command.`);
+			return msg.util.send(MESSAGES.ERRORS.TARGET('command or listener'));
 		}
 		if (commandOrListener instanceof Command) {
 			try {
 				await this.client.commandHandler.reload(commandOrListener);
-				return msg.util.send(`✓ Reloaded command \`${commandOrListener}\``);
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.SUCCESS.ONE(commandOrListener, 'command'));
 			} catch (err) {
-				return msg.util.send(`✘ Could not reload \`${commandOrListener}\`: \`${err}\``);
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.ERRORS.ONE(commandOrListener, 'command', err));
 			}
 		}
 		if (commandOrListener instanceof Listener) {
 			try {
 				await this.client.listenerHandler.reload(commandOrListener);
-				return msg.util.send(`✓ Reloaded eventlistener \`${commandOrListener}\``);
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.SUCCESS.ONE(commandOrListener, 'listener'));
 			} catch (err) {
-				return msg.util.send(`✘ Could not reload \`${commandOrListener}\`: \`${err}\``);
+				return msg.util.send(MESSAGES.COMMANDS.RELOAD.ERRORS.ONE(commandOrListener, 'listener', err));
 			}
 		}
-		return msg.util.send(`✘ Can not convert \`${commandOrListener}\` to \`command or listener\``);
+		return msg.util.send(MESSAGES.ERRORS.RESOLVE(commandOrListener), 'command or listener');
 	}
 }
 module.exports = ReloadCommand;

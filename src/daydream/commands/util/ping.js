@@ -1,4 +1,5 @@
 const { Command } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class PingCommand extends Command {
 	constructor() {
@@ -14,8 +15,8 @@ class PingCommand extends Command {
 	}
 
 	async exec(msg) {
-		const ping = await msg.util.send('awaiting ping...');
-		msg.util.send(`✓ pong! Api Latency is ${ping.createdTimestamp - msg.createdTimestamp}ms. Av. Heartbeat is ${Math.round(this.client.ws.ping)}ms.`);
+		const ping = await msg.util.send(MESSAGES.COMMANDS.PING.WAITING);
+		msg.util.send(MESSAGES.COMMANDS.PING.SUCCESS(ping.createdTimestamp - msg.createdTimestamp, Math.round(this.client.ws.ping)));
 	}
 }
 module.exports = PingCommand;

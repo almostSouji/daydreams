@@ -4,6 +4,7 @@ const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict } = require('date-fns');
 const { displayStatus, groupBy } = require('../../util');
 const { Role } = require('discord.js');
+const { MESSAGES } = require('../../util/constants');
 
 class RoleInfoCommand extends Command {
 	constructor() {
@@ -55,12 +56,12 @@ class RoleInfoCommand extends Command {
 	async exec(msg, { role, color }) {
 		await msg.guild.members.fetch();
 		if (!role) {
-			return msg.util.send(`✘ No target provided, please provide a valid role.`);
+			return msg.util.send(MESSAGES.ERRORS.TARGET('role'));
 		}
 		if (role instanceof Role) {
 			return msg.util.send('', this.buildInfoEmbed(role, color));
 		}
-		return msg.util.send(`✘ Can not convert \`${role}\` to \`role\``);
+		return msg.util.send(MESSAGES.ERRORS.RESOLVE(role, 'role'));
 	}
 }
 

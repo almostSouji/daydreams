@@ -1,10 +1,10 @@
 const { Command } = require('discord-akairo');
 const fetch = require('node-fetch');
 const qs = require('query-string');
+const { MESSAGES, DOCS } = require('../../util/constants');
 
 // command by iCrawl @https://github.com/Naval-Base/yukikaze
 
-const sources = ['stable', 'master', 'rpc', 'commando', 'akairo', 'akairo-master', '11.5-dev'];
 class DocsCommand extends Command {
 	constructor() {
 		super('docs', {
@@ -39,15 +39,15 @@ class DocsCommand extends Command {
 
 	async exec(msg, { query, includePrivate, force }) {
 		query = query.split(' ');
-		let source = sources.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
-		if (source === '11.5-dev') {
-			source = `https://raw.githubusercontent.com/discordjs/discord.js/docs/11.5-dev.json`;
+		let source = DOCS.API.SOURCES.includes(query.slice(-1)[0]) ? query.pop() : 'stable';
+		if (source === DOCS.DEV_VERSION) {
+			source = DOCS.DEV_SOURCE;
 		}
 		const queryString = qs.stringify({ src: source, q: query.join(' '), force, includePrivate });
-		const res = await fetch(`https://djsdocs.sorta.moe/v2/embed?${queryString}`);
+		const res = await fetch(`${DOCS.API.BASE_URL}${queryString}`);
 		const embed = await res.json();
 		if (!embed) {
-			return msg.util.reply('Could not find requested content.');
+			return msg.util.reply(MESSAGES.DOCS.ERRORS.NOT_FOUND);
 		}
 
 		if (msg.channel.type === 'dm' || !msg.channel.permissionsFor(msg.guild.me).has(['ADD_REACTIONS', 'MANAGE_MESSAGES'], false)) {

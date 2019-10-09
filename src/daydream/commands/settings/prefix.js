@@ -1,4 +1,5 @@
 const { Command } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class PrefixCommand extends Command {
 	constructor() {
@@ -32,19 +33,19 @@ class PrefixCommand extends Command {
 	async exec(msg, { prefix, sudo, reset }) {
 		const defaultPrefix = this.client.config.prefix;
 		if (msg.channel.type !== 'text') {
-			return msg.util.send(`You can use the standard prefix \`${defaultPrefix}\` in direct messages.`);
+			return msg.util.send(MESSAGES.COMMANDS.PREFIX.DM(defaultPrefix));
 		}
 		const override = this.client.isOwner(msg.author) && sudo;
 		const oldPrefix = this.client.guildSettings.get(msg.guild.id, 'prefix', defaultPrefix);
 		if (!prefix || (!msg.member.hasPermission('MANAGE_GUILD') && !override)) {
-			return msg.util.send(`My prefix here is \`${oldPrefix}\`.\nAlternatively you can mention me.`);
+			return msg.util.send(MESSAGES.COMMANDS.PREFIX.CURRENT(oldPrefix));
 		}
 		if (reset) {
 			await this.client.guildSettings.set(msg.guild.id, 'prefix', defaultPrefix);
-			return msg.util.send(`Prefix on \`${msg.guild.name}\` reset to \`${defaultPrefix}\`.`);
+			return msg.util.send(MESSAGES.COMMANDS.PREFIX.RESET(defaultPrefix, msg.guild.name));
 		}
 		await this.client.guildSettings.set(msg.guild.id, 'prefix', prefix);
-		return msg.util.send(`Prefix on \`${msg.guild.name}\` changed from \`${oldPrefix}\` to \`${prefix}\`.`);
+		return msg.util.send(MESSAGES.COMMANDS.PREFIX.CHANGE(oldPrefix, prefix, msg.guild.name));
 	}
 }
 module.exports = PrefixCommand;
