@@ -1,24 +1,16 @@
-const { stripIndents } = require('common-tags');
-
 module.exports.PREFIXES = {
 	ERROR: '✘ ',
 	SUCCESS: '✓ '
 };
 
-module.exports.SENSITIVE_PATTERN_REPLACEMENT = '[REDACTED]';
-module.exports.GUILD_LEVELS = {
-	0: 'None',
-	1: 'Low',
-	2: 'Medium',
-	3: '(╯°□°）╯︵ ┻━┻',
-	4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
-};
-module.exports.WEATHER = {
+exports.SENSITIVE_PATTERN_REPLACEMENT = '[REDACTED]';
+
+exports.WEATHER = {
 	LANGUAGES: ['en', 'af', 'da', 'de', 'fr', 'fa', 'et', 'id', 'it', 'nb', 'nl', 'pl', 'pt-br', 'ro', 'ru', 'uk', 'az', 'be', 'bg', 'bs', 'ca', 'cy', 'cs', 'el', 'eo', 'es', 'fi', 'hi', 'hr', 'hu', 'hy', 'is', 'ja', 'jv', 'ka', 'kk', 'ko', 'ky', 'lt', 'lv', 'mk', 'ml', 'nl', 'nn', 'pt', 'pt-br', 'sk', 'sl', 'sr', 'sr-lat', 'sv', 'sw', 'th', 'tr', 'te', 'uz', 'vi', 'zh', 'zu', 'he'],
 	LOCATION_EXAMPLE: 'Locations: Any location in any language (`munich`), airports (`MUC`), sights (`~statue of liberty`), moon phases (`moon`, `moon@2019-03-25`), GPS coordinates (`-78.46,106.79`).'
 };
 
-module.exports.DOCS = {
+exports.DOCS = {
 	DEV_VERSION: '11.5-dev',
 	DEV_SOURCE: 'https://raw.githubusercontent.com/discordjs/discord.js/docs/11.5-dev.json',
 	API: {
@@ -27,19 +19,19 @@ module.exports.DOCS = {
 	}
 };
 
-module.exports.HELP = {
+exports.HELP = {
 	EMOJIS: {
 		GRANTED: `\`✅\``,
 		DENIED: `\`❌\``
 	}
 };
 
-module.exports.XKCD = {
+exports.XKCD = {
 	BASE_URL: 'https://xkcd.com/',
 	BASE_URL_EXPLAIN: 'https://www.explainxkcd.com/wiki/index.php/'
 };
 
-module.exports.MESSAGES = {
+exports.MESSAGES = {
 	ERRORS: {
 		RESOLVE: (input, type) => `${this.PREFIXES.ERROR}Can not convert \`${input}\` to \`${type}\``,
 		TARGET: type => `${this.PREFIXES.ERROR}Not target provided, please provide a valid ${type}`,

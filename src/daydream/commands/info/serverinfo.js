@@ -3,7 +3,7 @@ const { stripIndents } = require('common-tags');
 const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict } = require('date-fns');
 const { displayStatus, toTitleCase, groupBy } = require('../../util');
-const { GUILD_LEVELS } = require('../../util/constants');
+const { Constants } = require('discord.js');
 
 class ServerInfoCommand extends Command {
 	constructor() {
@@ -33,7 +33,7 @@ class ServerInfoCommand extends Command {
 			Created: ${formatDistanceStrict(ref.createdAt, Date.now(), { addSuffix: true })} (${format(ref.createdAt, this.client.config.dateFormat)})
 			Region: ${ref.region}
 			Owner: \`${ref.owner.user.tag}\`
-			Verification: ${GUILD_LEVELS[ref.verificationLevel]}
+			Verification: ${Constants.verificationLevel[ref.verificationLevel]}
 		`, true);
 
 		embed.addField('Counts', channelCounts.concat(memberCounts, roleCount).join(`\n`), true);
