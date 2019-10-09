@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class ResumeListener extends Listener {
 	constructor() {
@@ -10,7 +11,7 @@ class ResumeListener extends Listener {
 	}
 
 	exec(events) {
-		this.client.logger.info(`Resumed. (replayed ${events} events)`);
+		this.client.logger.info(MESSAGES.LOGGER('[RESUME]', MESSAGES.LISTENERS.RESUMED(events)));
 	}
 }
 

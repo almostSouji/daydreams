@@ -128,12 +128,24 @@ module.exports.MESSAGES = {
 			TRY_AGAIN_IN: offset => `${this.PREFIXES.ERROR}Try again in ${offset}s.`
 		},
 		MESSAGE_INVALID: {
-			NO_CONNECTION: (verificationEmoji, username) => `${this.PREFIXES.ERROR}[${verificationEmoji}] Connection to \`${username}\` could not be established.`,
-			NO_RECIPIENT: verificationEmoji => `${this.PREFIXES.ERROR}[${verificationEmoji}] Recipient not found`
+			ERRORS: {
+				NO_CONNECTION: (verificationEmoji, username) => `${this.PREFIXES.ERROR}[${verificationEmoji}] Connection to \`${username}\` could not be established.`,
+				NO_RECIPIENT: verificationEmoji => `${this.PREFIXES.ERROR}[${verificationEmoji}] Recipient not found`
+			},
+			TOPIC: (verificationEmoji, user) => `${verificationEmoji} DM with: ${user} | ${user.tag} (${user.id})`
 		},
 		MISSING_PERMISSIONS: {
 			USER: (permissions, commandname) => `${this.PREFIXES.ERROR}You need the permission${permissions.length > 1 && 's'} ${permissions} to execute the command \`${commandname}\`.`,
 			BOT: (permissions, commandname) => `${this.PREFIXES.ERROR}I need the permission${permissions.length > 1 && 's'} ${permissions} to execute the command \`${commandname}\`.`
+		},
+		LOGIN: {
+			LOG: client => `Logged in as ${client.user.tag} (${client.user.id}).`
+		},
+		DISCONNECT: {
+			LOG: code => `Disconnected with eventcode ${code}.`
+		},
+		RESUMED: {
+			LOG: number => `Resumed (Replayed ${number} events).`
 		}
 	}
 };

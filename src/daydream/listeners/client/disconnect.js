@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { MESSAGES } = require('../../util/constants');
 
 class DisconnectListener extends Listener {
 	constructor() {
@@ -10,7 +11,7 @@ class DisconnectListener extends Listener {
 	}
 
 	exec(event) {
-		this.client.logger.warn(`DC (${event.code})`);
+		this.client.logger.warn(MESSAGES.LOGGER('[DISCONNECT]', MESSAGES.LISTENERS.DISCONNECT.LOG(event.code)));
 	}
 }
 
