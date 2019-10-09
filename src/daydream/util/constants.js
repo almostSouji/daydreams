@@ -41,6 +41,17 @@ exports.MESSAGES = {
 	},
 	LOGGER: (prefix, input) => `${prefix} ${input}`,
 	COMMANDS: {
+		GUILD_INFO: {
+			ROLESTATE: (resultLength, rolesSize, usersSize) => `Rolestate is enabled and has ${resultLength} records for this guild saving the state of ${rolesSize} roles across ${usersSize} users.`
+		},
+		USER_INFO: {
+			INVITE_ME: 'Invite me to your server',
+			CREATED_BY: username => `Coded with 🍵 by ${username}`,
+			BLACKLIST_STATUS: {
+				BLACKLISTED: reason => `${this.HELP.EMOJIS.DENIED} Blacklisted${reason && ` with reason ${reason}`}`,
+				NOT_BLACKLISTED: `${this.HELP.EMOJIS.GRANTED} Not blacklisted`
+			}
+		},
 		WEATHER: {
 			ERRORS: {
 				NO_DATA: location => `${this.ERROR}No weather data for location \`${location}\` found.\n${this.WEATHER.LOCATION_EXAMPLE}`,

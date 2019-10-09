@@ -129,11 +129,11 @@ class UserInfoCommand extends Command {
 					Library: Discord.js ${version}
 					Framework: Akairo ${aVersion}
 
-					[Invite me to your server](https://discordapp.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=${perm.bitfield}&scope=bot)`;
+					[${MESSAGES.COMMANDS.USER_INFO.INVITE_ME}](https://discordapp.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=${perm.bitfield}&scope=bot)`;
 			embed
 				.addField('Stats', botStatsString, false)
 				.addField('Bot Information', botInfoString, false)
-				.setFooter(`Coded with 🍵 by ${creator.username}`, creator.displayAvatarURL());
+				.setFooter(MESSAGES.COMMANDS.USER_INFO.CREATED_BY(creator.username), creator.displayAvatarURL());
 		}
 		if (blacklist) {
 			const result = await this.client.db.models.blacklist.findOne({
@@ -141,7 +141,7 @@ class UserInfoCommand extends Command {
 					user: ref.id
 				}
 			});
-			embed.addField('Blacklist status:', result ? `\`❌\` Blacklisted${result.reason ? ` with reason: \`${result.reason}\`` : ''}` : '`✅` Not blacklisted');
+			embed.addField('Blacklist status:', result ? MESSAGES.COMMANDS.USER_INFO.BLACKLIST_STATUS.BLACKLISTED(result.reason) : MESSAGES.COMMANDS.USER_INFO.BLACKLIST_STATUS.NOT_BLACKLISTED);
 		}
 
 		return embed.applySpacers().shorten();

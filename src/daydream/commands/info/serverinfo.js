@@ -4,6 +4,7 @@ const { DaydreamEmbed } = require('../../index');
 const { format, formatDistanceStrict } = require('date-fns');
 const { displayStatus, toTitleCase, groupBy } = require('../../util');
 const { Constants } = require('discord.js');
+const { MESSAGES } = require('../../util/constants');
 
 class ServerInfoCommand extends Command {
 	constructor() {
@@ -45,7 +46,7 @@ class ServerInfoCommand extends Command {
 			});
 			const uRoles = new Set(result.map(r => r.role));
 			const uUsers = new Set(result.map(r => r.user));
-			embed.addField('Rolestate', `Rolestate is enabled and has ${result.length} records for this guild saving the state of ${uRoles.size} roles across ${uUsers.size} users.`);
+			embed.addField('Rolestate', MESSAGES.COMMANDS.GUILD_INFO.ROLESTATE(result.length, uRoles.size, uUsers.size));
 		}
 		embed.addField('Members', presenceCounts.join('\n'));
 
