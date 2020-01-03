@@ -20,7 +20,7 @@
     "xivapi-js": "^0.2.1"
   },
   "devDependencies": {
-    "eslint": "^5.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-aqua": "^4.3.4"
   },
   "eslintConfig": {
