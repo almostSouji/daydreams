@@ -81,43 +81,57 @@ class UserInfoCommand extends Command {
 		}
 		const userActivity = ref.presence.activity;
 		if (userActivity) {
-			const spotify = userActivity.name === 'Spotify' ? true : false;
-			let activityString = `${userActivity.type.toLowerCase()} ${userActivity.type === 'LISTENING' ? 'to' : ''} ${userActivity.name}`;
-			if (!spotify && userActivity.timestamps && userActivity.timestamps.start) {
-				activityString += ` for ${formatDistance(Date.now(), userActivity.timestamps.start)}`;
-			}
-			if (spotify) {
-				const { start, end } = userActivity.timestamps;
-				const now = Date.now();
-				const timeIn = format(now - start, 'mm:ss');
-				const duration = format(end - start, 'mm:ss');
-				activityString += ` (${timeIn}/${duration})`;
-			}
-			if (userActivity.details) {
-				activityString += `\n${spotify ? 'Title' : 'Details'}: ${userActivity.details}`;
-			}
-			if (userActivity.state) {
-				activityString += `\n${spotify ? 'By' : 'State'}: ${userActivity.state}`;
-			}
-			if (userActivity.assets) {
-				let footerString = '';
-				if (userActivity.assets.largeText && userActivity.assets.smallText) {
-					footerString += `\n${userActivity.assets.largeText} (${userActivity.assets.smallText})`;
-				} else if (userActivity.assets.largeText && !userActivity.assets.smallText) {
-					footerString += `\n${userActivity.assets.largeText}`;
-				} else if (!userActivity.assets.largeText && userActivity.assets.smallText) {
-					footerString += `\n${userActivity.assets.smallText}`;
+			let activityString = '';
+			if (userActivity.type === 'CUSTOM_STATUS') {
+				const { emoji } = userActivity;
+				if (emoji && !emoji.id) {
+					activityString += `${emoji.name}`;
 				}
-
-				if (userActivity.assets.largeImage) {
-					embed.setFooter(`${spotify ? 'Album:' : ''}${footerString}`, userActivity.assets.largeImageURL());
+				if (userActivity.state) {
+					activityString += ` ${userActivity.state}`;
 				}
-			}
-			if (userActivity.url) {
-				activityString += `\nUrl: ${userActivity.url}`;
-			}
+				if (emoji && emoji.id) {
+					embed.setFooter('\u200b', `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? 'gif' : 'png'}`);
+				}
+				embed.addField('Activity', activityString, false);
+			} else {
+				const spotify = userActivity.name === 'Spotify' ? true : false;
+				activityString += `${userActivity.type.toLowerCase()} ${userActivity.type === 'LISTENING' ? 'to' : ''} ${userActivity.name}`;
+				if (!spotify && userActivity.timestamps && userActivity.timestamps.start) {
+					activityString += ` for ${formatDistance(Date.now(), userActivity.timestamps.start)}`;
+				}
+				if (spotify) {
+					const { start, end } = userActivity.timestamps;
+					const now = Date.now();
+					const timeIn = format(now - start, 'mm:ss');
+					const duration = format(end - start, 'mm:ss');
+					activityString += ` (${timeIn}/${duration})`;
+				}
+				if (userActivity.details) {
+					activityString += `\n${spotify ? 'Title' : 'Details'}: ${userActivity.details}`;
+				}
+				if (userActivity.state) {
+					activityString += `\n${spotify ? 'By' : 'State'}: ${userActivity.state}`;
+				}
+				if (userActivity.assets) {
+					let footerString = '';
+					if (userActivity.assets.largeText && userActivity.assets.smallText) {
+						footerString += `\n${userActivity.assets.largeText} (${userActivity.assets.smallText})`;
+					} else if (userActivity.assets.largeText && !userActivity.assets.smallText) {
+						footerString += `\n${userActivity.assets.largeText}`;
+					} else if (!userActivity.assets.largeText && userActivity.assets.smallText) {
+						footerString += `\n${userActivity.assets.smallText}`;
+					}
 
-			embed.addField(`${spotify ? 'Song Information' : 'Activity'}`, activityString, false);
+					if (userActivity.assets.largeImage) {
+						embed.setFooter(`${spotify ? 'Album:' : ''}${footerString}`, userActivity.assets.largeImageURL());
+					}
+				}
+				if (userActivity.url) {
+					activityString += `\nUrl: ${userActivity.url}`;
+				}
+				embed.addField(`${spotify ? 'Song Information' : 'Activity'}`, activityString, false);
+			}
 		}
 		if (ref.id === this.client.user.id) {
 			const creator = await this.client.users.fetch('83886770768314368');
