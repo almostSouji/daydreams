@@ -7,5 +7,5 @@ module.exports = {
 	Util: require('./util'),
 	version: require('../../package.json').version,
 	DaydreamEmbed: require('./structures/DaydreamEmbed'),
-	Constants: require('./util/constants')
+	CONSTANTS: require('./util/constants')
 };

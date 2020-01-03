@@ -1,4 +1,4 @@
-module.exports.PREFIXES = {
+exports.PREFIXES = {
 	ERROR: '✘ ',
 	SUCCESS: '✓ '
 };
@@ -31,6 +31,14 @@ exports.XKCD = {
 	BASE_URL_EXPLAIN: 'https://www.explainxkcd.com/wiki/index.php/'
 };
 
+exports.PROMPT_ANSWERS = {
+	GRANTED: ['y', 'yes'],
+	DENIED: ['n', 'no']
+};
+
+exports.PROMPT_ANSWERS_ALL = this.PROMPT_ANSWERS.GRANTED.concat(this.PROMPT_ANSWERS.DENIED);
+exports.PROMPT_HELP = `(${this.PROMPT_ANSWERS.GRANTED[0]}/${this.PROMPT_ANSWERS.DENIED[0]})`;
+
 exports.MESSAGES = {
 	ERRORS: {
 		RESOLVE: (input, type) => `${this.PREFIXES.ERROR}Can not convert \`${input}\` to \`${type}\``,
@@ -48,7 +56,7 @@ exports.MESSAGES = {
 			INVITE_ME: 'Invite me to your server',
 			CREATED_BY: username => `Coded with 🍵 by ${username}`,
 			BLACKLIST_STATUS: {
-				BLACKLISTED: reason => `${this.HELP.EMOJIS.DENIED} Blacklisted${reason && ` with reason ${reason}`}`,
+				BLACKLISTED: reason => `${this.HELP.EMOJIS.DENIED} Blacklisted${reason ? ` with reason ${reason}` : ''}`,
 				NOT_BLACKLISTED: `${this.HELP.EMOJIS.GRANTED} Not blacklisted`
 			}
 		},
@@ -112,14 +120,14 @@ exports.MESSAGES = {
 		QUOTE: {
 			ERRORS: {
 				MISSING_PERMISSIONS: `${this.PREFIXES.ERROR}You can only quote messages you have permission to view.`,
-				NO_CONTENT: `${this.PREFIXES.ERROR}The target message does not have any content to quote`
+				NO_CONTENT: `${this.PREFIXES.ERROR}The target message does not have any content to quote.`
 			},
 			JUMP_LINK: url => `[➜](${url} 'jump to message')`
 		},
 		XKCD: {
 			ERRORS: {
 				NOT_FOUND: `${this.PREFIXES.ERROR}Xkcd not found.`,
-				INVALID: number => `${this.PREFIXES.ERROR}Invalid xkcd: #${number}`
+				INVALID: number => `${this.PREFIXES.ERROR}Invalid xkcd: #${number}.`
 			}
 		}
 	},
@@ -138,8 +146,8 @@ exports.MESSAGES = {
 			TOPIC: (verificationEmoji, user) => `${verificationEmoji} DM with: ${user} | ${user.tag} (${user.id})`
 		},
 		MISSING_PERMISSIONS: {
-			USER: (permissions, commandname) => `${this.PREFIXES.ERROR}You need the permission${permissions.length > 1 && 's'} ${permissions} to execute the command \`${commandname}\`.`,
-			BOT: (permissions, commandname) => `${this.PREFIXES.ERROR}I need the permission${permissions.length > 1 && 's'} ${permissions} to execute the command \`${commandname}\`.`
+			USER: (permissions, commandname) => `${this.PREFIXES.ERROR}You need the permission${permissions.length > 1 ? 's' : ''} ${permissions} to execute the command \`${commandname}\`.`,
+			BOT: (permissions, commandname) => `${this.PREFIXES.ERROR}I need the permission${permissions.length > 1 ? 's' : ''} ${permissions} to execute the command \`${commandname}\`.`
 		},
 		LOGIN: {
 			LOG: client => `Logged in as ${client.user.tag} (${client.user.id}).`
