@@ -79,9 +79,9 @@ class UserInfoCommand extends Command {
 					.join(', '));
 			}
 		}
-		const userActivity = ref.presence.activity;
+		const userActivity = ref.presence.activities[0];
 		if (userActivity) {
-			let activityString = '';
+			let activityString = '\u200b';
 			if (userActivity.type === 'CUSTOM_STATUS') {
 				const { emoji } = userActivity;
 				if (emoji && !emoji.id) {
