@@ -34,7 +34,7 @@ class ServerInfoCommand extends Command {
 			Created: ${formatDistanceStrict(ref.createdAt, Date.now(), { addSuffix: true })} (${format(ref.createdAt, this.client.config.dateFormat)})
 			Region: ${ref.region}
 			Owner: \`${ref.owner.user.tag}\`
-			Verification: ${Constants.verificationLevel[ref.verificationLevel]}
+			Verification: ${Constants.VerificationLevels[ref.verificationLevel]}
 		`, true);
 
 		embed.addField('Counts', channelCounts.concat(memberCounts, roleCount).join(`\n`), true);
