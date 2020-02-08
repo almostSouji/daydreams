@@ -3,7 +3,7 @@ const { stripIndents } = require('common-tags');
 const { GuildEmoji, Role } = require('discord.js');
 const { DaydreamEmbed } = require('../../../daydream');
 const { format, formatDistanceStrict } = require('date-fns');
-
+const { DAYDREAM, MESSAGES } = require('../../util/constants');
 
 class EmojiCommand extends Command {
 	constructor() {
@@ -51,25 +51,25 @@ class EmojiCommand extends Command {
 
 	async exec(msg, { emoji, subcommand }) {
 		if (!emoji) {
-			return msg.util.send(`✘ Provide an emoji`);
+			return msg.util.send(DAYDREAM.MESSAGES.ERRORS.TARGET('emoji'));
 		}
 		if (emoji instanceof GuildEmoji) {
 			if (subcommand === 'clear') {
 				emoji.roles.remove(emoji.roles.keyArray());
-				return msg.util.send(`✓ Cleared restrictions for \`:${emoji.name}:\``);
+				return msg.util.send(MESSAGES.COMMANDS.EMOJI.SUCCESS.CLEAR(emoji.name));
 			}
 			if (subcommand instanceof Role) {
 				if (emoji.roles.has(subcommand.id)) {
 					await emoji.roles.remove(subcommand);
-					return msg.util.send(`✓ Removed role \`${subcommand.name}\` to emojiwhitelist \`:${emoji.name}:\``);
+					return msg.util.send(MESSAGES.COMMANDS.EMOJI.SUCCESS.REMOVE(subcommand.name, emoji.name));
 				}
 				await emoji.roles.add(subcommand);
-				return msg.util.send(`✓ Added role \`${subcommand.name}\` to emojiwhitelist \`:${emoji.name}:\``);
+				return msg.util.send(MESSAGES.COMMANDS.EMOJI.SUCCESS.ADD(subcommand.name, emoji.name));
 			}
 			return msg.util.send(this.buildInfoEmbed(emoji));
 		}
 		if (typeof emoji === 'string') {
-			return msg.util.send('', `✘ Invalid emoji: \`${emoji}\``);
+			return msg.util.send(MESSAGES.COMMANDS.EMOJI.ERROR.INVALID(emoji));
 		}
 	}
 }

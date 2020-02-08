@@ -1,5 +1,6 @@
 const { Command, Argument } = require('discord-akairo');
 const { GuildMember } = require('discord.js');
+const { DAYDREAM, MESSAGES } = require('../../util/constants');
 
 class BanCommand extends Command {
 	constructor() {
@@ -37,7 +38,7 @@ class BanCommand extends Command {
 
 	async exec(msg, { target, soft, prune, reason }) {
 		if (!target) {
-			return msg.util.send('✘ Provide a user to ban');
+			return msg.util.send(DAYDREAM.ERRORS.TARGET('user to ban'));
 		}
 		if (typeof target === 'string') {
 			try {
@@ -46,29 +47,35 @@ class BanCommand extends Command {
 				try {
 					target = await this.client.users.fetch(target);
 				} catch (_) { // eslint-disable-line
-					return msg.util.send(`✘ Invalid user: \`${target}\``);
+					return msg.util.send(DAYDREAM.ERRORS.RESOLVE(target, 'user'));
 				}
 			}
 		}
 
 		if (target instanceof GuildMember) {
-			if (target.id === msg.member.id || target.id === this.client.user.id) return msg.util.send('✘ Can not execute command on self');
-			if (!target.bannable) return msg.util.send('✘ Command execution denied');
-			if ((target.roles.highest.position >= msg.member.roles.highest.position || target.id === msg.guild.ownerID) && msg.member.id !== msg.guild.ownerID) return msg.util.send('✘ Missing authorization');
+			if (target.id === msg.member.id || target.id === this.client.user.id) {
+				return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.SELF);
+			}
+			if (!target.bannable) {
+				return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.NOT_BANNABLE);
+			}
+			if ((target.roles.highest.position >= msg.member.roles.highest.position || target.id === msg.guild.ownerID) && msg.member.id !== msg.guild.ownerID) {
+				return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.HIGHER_TARGET);
+			}
 		}
 
 		if (msg.guild.lockedUsers.has(target.id)) {
-			return msg.util.send(`✘ User \`${target.tag || target.user.tag}\` is currently being moderated`);
+			return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.MODERATED(target.tag || target.user.tag));
 		}
 
-		const options = { reason: `by ${msg.author.tag} | ${msg.author.id} | ${reason ? reason : ''}`, days: prune ? 7 : null };
+		const options = { reason: MESSAGES.COMMANDS.BAN.REASON(msg.author, reason), days: prune && 7 };
 		const guildBans = await msg.guild.fetchBans();
 		if (guildBans.has(target.id)) {
-			return msg.util.send(`✘ User \`${target.tag || target.user.tag}\` is already banned`);
+			return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.ALREADY_BANNED(target.tag || target.user.tag));
 		}
 
 		msg.guild.lockedUsers.add(target.id);
-		await msg.util.send(`${msg.author} awaiting confirmation to ${soft ? 'soft' : ''}ban \`${target.tag || target.user.tag}\` (y/n)`);
+		await msg.util.send(MESSAGES.COMMANDS.BAN.PROMPT(msg.author, soft, target.tag || target.user.tag));
 		const filter = m => m.author.id === msg.author.id && ['y', 'yes', 'n', 'no'].includes(m.content.toLowerCase());
 		try {
 			const collected = await msg.channel.awaitMessages(filter, { max: 1, time: 20000, errors: ['time'] });
@@ -79,12 +86,15 @@ class BanCommand extends Command {
 				}
 
 				msg.guild.lockedUsers.delete(target.id);
-				return msg.util.send(`✓ ${soft ? 'Softb' : 'B'}anned \`${banned.tag || banned.user.tag}\` on \`${msg.guild.name}\`${prune ? ' and removed their messages' : ''}${reason ? ` with reason \`${reason}\`` : ''}`, null, true);
+				if (soft) {
+					return msg.util.send(MESSAGES.COMMANDS.BAN.SUCCESS.SOFT_BANNED(banned.tag || banned.user.tag, msg.guild.name, reason, prune), null);
+				}
+				return msg.util.send(MESSAGES.COMMANDS.BAN.SUCCESS.SOFT_BANNED(banned.tag || banned.user.tag, msg.guild.name, reason, prune), null);
 			}
 			throw new Error('Negative user input');
 		} catch (err) {
 			msg.guild.lockedUsers.delete(target.id);
-			return msg.util.send(`✘ Action canceled${err.message === 'Negative user input' ? '' : ' (timeout)'}`);
+			return msg.util.send(MESSAGES.COMMANDS.BAN.ERRORS.CANCELED(err.message !== 'Negative user input'));
 		}
 	}
 }

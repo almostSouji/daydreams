@@ -1,5 +1,6 @@
 const { Command, Argument } = require('discord-akairo');
 const { GuildMember } = require('discord.js');
+const { DAYDREAM, MESSAGES } = require('../../util/constants');
 
 class KickCommand extends Command {
 	constructor() {
@@ -27,41 +28,42 @@ class KickCommand extends Command {
 
 	async exec(msg, { target, reason }) {
 		if (!target) {
-			return msg.channel.send('✘ Provide a user to kick');
+			return msg.channel.send(DAYDREAM.ERRORS.TARGET('user'));
 		}
 		if (typeof target === 'string') {
 			try {
 				target = msg.guild.member(target) || await msg.guild.members.fetch(target);
 			} catch (_) {
-				return msg.util.send(`✘ Invalid user: \`${target}\``);
+				return msg.util.send(DAYDREAM.ERRORS.RESOLVE(target, 'user'));
 			}
 		}
 
 		if (target instanceof GuildMember) {
-			if (target.id === msg.member.id || target.id === this.client.user.id) return msg.util.send('✘ Can not execute command on self');
-			if (!target.kickable) return msg.util.send('✘ Command execution denied');
-			if ((target.roles.highest.position >= msg.member.roles.highest.position || target.id === msg.guild.ownerID) && msg.member.id !== msg.guild.ownerID) return msg.util.send('✘ Missing authorization');
+			if (target.id === msg.member.id || target.id === this.client.user.id) return msg.util.send(MESSAGES.COMMANDS.KICK.ERROS.SELF);
+			if (!target.kickable) return msg.util.send(MESSAGES.COMMANDS.KICK.ERROS.NOT_BANNABLE);
+			if ((target.roles.highest.position >= msg.member.roles.highest.position || target.id === msg.guild.ownerID) && msg.member.id !== msg.guild.ownerID) return msg.util.send(MESSAGES.COMMANDS.KICK.ERROS.HIGHER_TARGET);
 		}
 
 		if (msg.guild.lockedUsers.has(target.id)) {
-			return msg.util.send(`✘ User \`${target.tag || target.user.tag}\` is currently being moderated`);
+			return msg.util.send(MESSAGES.COMMANDS.KICK.ERROS.MODERATED);
 		}
 
 		msg.guild.lockedUsers.add(target.id);
-		await msg.util.send(`${msg.author} awaiting confirmation to kick \`${target.user.tag}\` (y/n)`);
-		const filter = m => m.author.id === msg.author.id && ['y', 'yes', 'n', 'no'].includes(m.content.toLowerCase());
+		await msg.util.send(MESSAGES.COMMANDS.KICK.PROMPT(msg.author, target.user.tag));
+		const filter = m => m.author.id === msg.author.id && DAYDREAM.PROMPT_ANSWERS_ALL.includes(m.content.toLowerCase());
+
 		try {
 			const collected = await msg.channel.awaitMessages(filter, { max: 1, time: 20000, errors: ['time'] });
-			if (['yes', 'y'].includes(collected.first().content)) {
-				const kicked = await target.kick(`by ${msg.author.tag} | ${msg.author.id} | ${reason ? reason : ''}`);
+			if (DAYDREAM.PROMPT_ANSWERS.GRANTED.includes(collected.first().content)) {
+				const kicked = await target.kick(MESSAGES.COMMANDS.KICK.REASON(msg.author, reason ? reason : ''));
 
 				msg.guild.lockedUsers.delete(target.id);
-				return msg.util.send(`✓ Kicked \`${kicked.user.tag}\` from \`${msg.guild.name}\`${reason ? ` with reason \`${reason}\`` : ''}`, null, true);
+				return msg.util.send(MESSAGES.COMMANDS.KICK.SUCCESS(kicked.user.tag, msg.guild.name, reason), null, true);
 			}
 			throw new Error('Negative user input');
 		} catch (err) {
 			msg.guild.lockedUsers.delete(target.id);
-			return msg.util.send(`✘ Action canceled${err.message === 'Negative user input' ? '' : ' (timeout)'}.`);
+			return msg.util.send(MESSAGES.COMMANDS.KICK.ERROS.CANCELED(err.message === 'Negative user input'));
 		}
 	}
 }
