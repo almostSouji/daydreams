@@ -46,7 +46,7 @@ class EmojiCommand extends Command {
 		if (!embed.color && emoji.guild.me.displayColor) {
 			embed.setColor(emoji.guild.me.displayColor);
 		}
-		return embed.applySpacers();
+		return embed;
 	}
 
 	async exec(msg, { emoji, subcommand }) {

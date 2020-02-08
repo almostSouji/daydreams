@@ -189,7 +189,7 @@ class RoleStateCommand extends Command {
 		if (!embed.color && msg.guild.me.displayColor) {
 			embed.setColor(msg.guild.me.displayColor);
 		}
-		msg.util.send('', embed.applySpacers().shorten());
+		msg.util.send('', embed.shorten());
 	}
 }
 module.exports = RoleStateCommand;

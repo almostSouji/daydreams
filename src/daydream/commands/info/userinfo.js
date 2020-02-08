@@ -158,7 +158,7 @@ class UserInfoCommand extends Command {
 			embed.addField('Blacklist status:', result ? MESSAGES.COMMANDS.USER_INFO.BLACKLIST_STATUS.BLACKLISTED(result.reason) : MESSAGES.COMMANDS.USER_INFO.BLACKLIST_STATUS.NOT_BLACKLISTED);
 		}
 
-		return embed.applySpacers().shorten();
+		return embed.shorten();
 	}
 
 	async exec(msg, { target, permissions, color, blacklist }) {

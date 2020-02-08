@@ -46,7 +46,7 @@ class baninfoCommand extends Command {
 			embed.setColor(guild.me.displayColor);
 		}
 
-		return embed.applySpacers();
+		return embed;
 	}
 
 	async exec(msg, { target }) {

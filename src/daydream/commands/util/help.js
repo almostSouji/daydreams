@@ -73,7 +73,7 @@ class HelpCommand extends Command {
 		if (!embed.color && message.guild && message.guild.me.displayColor) {
 			embed.setColor(message.guild.me.displayColor);
 		}
-		return embed.applySpacers();
+		return embed;
 	}
 
 	exec(msg, { cmd, all }) {

@@ -54,7 +54,7 @@ class ServerInfoCommand extends Command {
 			embed.setColor(ref.me.displayColor);
 		}
 
-		return embed.applySpacers();
+		return embed;
 	}
 
 	async exec(msg) {

@@ -61,7 +61,7 @@ class QuoteCommand extends Command {
 		} else {
 			embed.setDescription(`${message.content}\n${MESSAGES.COMMANDS.QUOTE.JUMP_LINK(message.url)}`);
 		}
-		return embed.applySpacers().shorten();
+		return embed.shorten();
 	}
 
 	exec(msg, { qMsg, color, edits }) {

@@ -95,7 +95,7 @@ class CharacterCommand extends Command {
 			});
 			embed.addField('Equipped gear', gear.join('\n'));
 		}
-		return embed.applySpacers().shorten();
+		return embed.shorten();
 	}
 
 	async exec(msg, { serverOrID, name, showstats, showgear }) {

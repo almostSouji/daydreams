@@ -61,7 +61,7 @@ class FreeCompanyCommand extends Command {
 			}
 			embed.addField('Estate:', estateString);
 		}
-		return embed.applySpacers().shorten();
+		return embed.shorten();
 	}
 
 	async exec(msg, { serverOrID, name }) {

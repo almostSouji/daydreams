@@ -42,7 +42,7 @@ class VersionCommand extends akairo.Command {
 		if (!embed.color && msg.guild && msg.guild.me.displayColor) {
 			embed.setColor(msg.guild.me.displayColor);
 		}
-		return embed.applySpacers();
+		return embed;
 	}
 
 	async exec(msg) {

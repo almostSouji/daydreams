@@ -50,7 +50,7 @@ class RoleInfoCommand extends Command {
 		if (ref.color && (!embed.color || color)) {
 			embed.setColor(ref.color);
 		}
-		return embed.applySpacers();
+		return embed;
 	}
 
 	async exec(msg, { role, color }) {

@@ -16,17 +16,6 @@ class DaydreamEmbed extends MessageEmbed {
 		this.color = data.color || defaultColor;
 	}
 
-	/**
-	 * Applies spacing to every embed field but the last
-	 * @returns {DaydreamEmbed}
-	 */
-	applySpacers() {
-		for (const i in this.fields) {
-			if (i < this.fields.length - 1) this.fields[i].value += `\n\u200B`;
-		}
-		return this;
-	}
-
 	shorten() {
 		if (this.fields.length > limits.fields) {
 			this.fields = this.fields.slice(0, limits.fields);

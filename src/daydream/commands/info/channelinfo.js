@@ -77,7 +77,7 @@ class ChannelInfoCommand extends Command {
 			embed.setColor(ref.guild.me.displayColor);
 		}
 
-		return embed.applySpacers();
+		return embed;
 	}
 
 	exec(msg, { channel }) {
