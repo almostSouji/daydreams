@@ -1,10 +1,12 @@
 const DAYDREAM = require('../../daydream/util/constants');
 const { stripIndents } = require('common-tags');
 
-exports.suffixes = {
-
-};
 exports.DAYDREAM = DAYDREAM;
+exports.TRIGGER_GSOR = {
+	EMOJI: '596787079527006229',
+	GUILDS: ['251773009197531137'],
+	TRIGGERS: ['gsor', 'great serpent', 'ronka', 'scree']
+};
 exports.MESSAGES = {
 	COMMANDS: {
 		BAN: {
