@@ -79,6 +79,7 @@ class HelpCommand extends Command {
 	exec(msg, { cmd, all }) {
 		if (!cmd) {
 			const allowedCategories = this.handler.categories.filter(category => {
+				if (category.id === 'triggers') return false;
 				const filtered = category.filter(comm => {
 					if (all) {
 						return true;
