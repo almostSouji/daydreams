@@ -13,7 +13,7 @@ class MessageInvalidListener extends Listener {
 		if (msg.channel.type === 'dm') {
 			if (!this.client.hubGuildID) return;
 			const userQuery = await this.client.db.models.users.findOne({ where: { id: msg.author.id } });
-			if (!userQuery || !userQuery.channel || !this.client.channels.get(userQuery.channel)) {
+			if (!userQuery || !userQuery.channel || !this.client.channels.cache.get(userQuery.channel)) {
 				const channel = await this.client.hubGuild.channels.create(`${msg.author.id}`, {
 					topic:
 					MESSAGES.LISTENERS.MESSAGE_INVALID.TOPIC(this.client.config.emojis.crest, msg.author)

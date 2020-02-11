@@ -24,13 +24,13 @@ class SandboxRoleCommand extends Command {
 
 	async exec(msg) {
 		if (!msg.guild.sandbox) return;
-		let adminRole = msg.guild.roles.find(val => val.name === 'Admin' && val.permissions.has('ADMINISTRATOR'));
+		let adminRole = msg.guild.roles.cache.find(val => val.name === 'Admin' && val.permissions.has('ADMINISTRATOR'));
 
 		if (!adminRole) {
 			adminRole = await msg.guild.roles.create({ data: { name: 'Admin', color: 7506394, permissions: 'ADMINISTRATOR' } });
 		}
 
-		if (msg.member.roles.has(adminRole.id)) {
+		if (msg.member.roles.cache.has(adminRole.id)) {
 			await msg.member.roles.remove(adminRole);
 			return msg.util.send(
 				RESPONSESA[Math.floor(Math.random() * RESPONSESA.length)]

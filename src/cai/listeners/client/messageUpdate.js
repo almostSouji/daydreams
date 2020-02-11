@@ -27,7 +27,7 @@ class MessageUpdateListener extends Listener {
 		if (!channelID) {
 			return;
 		}
-		const channel = oM.guild.channels.get(channelID);
+		const channel = oM.guild.channels.cache.get(channelID);
 		if (!channel) {
 			return;
 		}

@@ -21,7 +21,7 @@ class MessageDeleteListener extends Listener {
 		if (!channelID) {
 			return;
 		}
-		const channel = msg.guild.channels.get(channelID);
+		const channel = msg.guild.channels.cache.get(channelID);
 		if (!channel) {
 			return;
 		}

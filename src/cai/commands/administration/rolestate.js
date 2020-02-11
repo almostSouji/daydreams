@@ -71,7 +71,7 @@ class RoleStateCommand extends Command {
 					if (['yes', 'y'].includes(collected.first().content)) {
 						const records = [];
 						for (const member of members.values()) {
-							for (const role of member.roles.filter(r => r.id !== msg.guild.id).values()) {
+							for (const role of member.roles.cache.filter(r => r.id !== msg.guild.id).values()) {
 								records.push({
 									role: role.id,
 									guild: msg.guild.id,
@@ -117,7 +117,7 @@ class RoleStateCommand extends Command {
 								},
 								{
 									role: {
-										[Op.notIn]: msg.guild.roles.keyArray()
+										[Op.notIn]: msg.guild.roles.cache.keyArray()
 									}
 								}
 							]
@@ -126,7 +126,7 @@ class RoleStateCommand extends Command {
 					});
 					const records = [];
 					for (const member of members.values()) {
-						for (const role of member.roles.filter(r => r.id !== msg.guild.id).values()) {
+						for (const role of member.roles.cache.filter(r => r.id !== msg.guild.id).values()) {
 							records.push({
 								role: role.id,
 								guild: msg.guild.id,
@@ -144,7 +144,7 @@ class RoleStateCommand extends Command {
 		}
 		if (typeof target === 'string') {
 			try {
-				target = this.client.users.get(target) || await this.client.users.fetch(target);
+				target = this.client.users.cache.get(target) || await this.client.users.fetch(target);
 			} catch (_) {
 				return msg.util.send(`✘ Invalid user: \`${target}\``);
 			}
@@ -155,11 +155,11 @@ class RoleStateCommand extends Command {
 				user: target.id
 			}
 		});
-		const roleIDs = result.map(r => r.role).filter(r => msg.guild.roles.has(r));
+		const roleIDs = result.map(r => r.role).filter(r => msg.guild.roles.cache.has(r));
 		const assignableRoles = [];
 		const unassignableRoles = [];
 		for (const rID of roleIDs) {
-			const role = msg.guild.roles.get(rID);
+			const role = msg.guild.roles.cache.get(rID);
 			const roleInfo = `\`${role.name}\` (${role.id})`;
 			if (botMember.roles.highest.comparePositionTo(rID) <= 0) {
 				unassignableRoles.push(roleInfo);

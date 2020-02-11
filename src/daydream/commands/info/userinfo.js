@@ -63,7 +63,7 @@ class UserInfoCommand extends Command {
 		if (ref instanceof GuildMember) {
 			let infoString = stripIndents`${ref.nickname ? `Nickname: \`${ref.nickname}\`` : ''}
 					Joined: ${formatDistanceStrict(ref.joinedAt, Date.now(), { addSuffix: true })} (${format(ref.joinedAt, this.client.config.dateFormat)})`;
-			const roleList = ref.roles.filter(r => r.id !== r.guild.id).map(fr => `\`${fr.name}\``);
+			const roleList = ref.roles.cache.filter(r => r.id !== r.guild.id).map(fr => `\`${fr.name}\``);
 			if (roleList.length > 0) {
 				infoString += `\nRoles [${roleList.length}]: ${roleList.join(', ')}`;
 			}
@@ -137,7 +137,7 @@ class UserInfoCommand extends Command {
 			const creator = await this.client.users.fetch('83886770768314368');
 			const permissionArray = [...new Set(this.handler.modules.reduce((a, e) => a.concat(e.clientPermissions), []).filter(e => e))];
 			const perm = new Permissions(permissionArray);
-			const botStatsString = `Guilds: ${this.client.guilds.size} | Users: ${this.client.users.size} | Channels: ${this.client.channels.size}`;
+			const botStatsString = `Guilds: ${this.client.guilds.cache.size} | Users: ${this.client.users.ache.size} | Channels: ${this.client.channels.cache.size}`;
 			const botInfoString = stripIndents`
 					Runtime: Node ${process.version}
 					Library: Discord.js ${version}

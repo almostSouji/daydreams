@@ -31,7 +31,7 @@ class NukeCommand extends Command {
 		await msg.guild.members.fetch();
 		const joinCutoff = Date.now() - (joinedBefore * 60000);
 		const ageCutoff = Date.now() - (olderThan * 60000);
-		const targets = msg.guild.members.filter(
+		const targets = msg.guild.members.cache.filter(
 			member => member.joinedTimestamp > joinCutoff &&
 				member.user.createdTimestamp > ageCutoff
 		);

@@ -10,7 +10,7 @@ class CelClient extends Client {
 	}
 
 	get sandboxes() {
-		return this.guilds
+		return this.guilds.cache
 			.filter(g => g.sandbox)
 			.sort((a, b) => a.sandbox - b.sandbox);
 	}

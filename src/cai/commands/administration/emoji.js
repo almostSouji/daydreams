@@ -41,7 +41,7 @@ class EmojiCommand extends Command {
 		`);
 
 		if (emoji.roles.size) {
-			embed.addField('Restricted to Roles', emoji.roles.map(role => `\`${role.name}\``).join(', '));
+			embed.addField('Restricted to Roles', emoji.roles.cache.map(role => `\`${role.name}\``).join(', '));
 		}
 		if (!embed.color && emoji.guild.me.displayColor) {
 			embed.setColor(emoji.guild.me.displayColor);
@@ -59,7 +59,7 @@ class EmojiCommand extends Command {
 				return msg.util.send(MESSAGES.COMMANDS.EMOJI.SUCCESS.CLEAR(emoji.name));
 			}
 			if (subcommand instanceof Role) {
-				if (emoji.roles.has(subcommand.id)) {
+				if (emoji.roles.cache.has(subcommand.id)) {
 					await emoji.roles.remove(subcommand);
 					return msg.util.send(MESSAGES.COMMANDS.EMOJI.SUCCESS.REMOVE(subcommand.name, emoji.name));
 				}

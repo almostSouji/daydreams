@@ -10,7 +10,7 @@ async function buildInfoEmbed(sandboxes) {
 		if (invites.size) {
 			invite = invites.first();
 		} else {
-			const channel = s.channels.find(c => c.type === 'text');
+			const channel = s.channels.cache.find(c => c.type === 'text');
 			invite = await channel.createInvite({ maxAge: 0 });
 		}
 		sandboxList.push(` \`${s.name} \` | ${invite}`);
@@ -42,7 +42,7 @@ class SandboxSeachCommand extends Command {
 	async exec(msg, { guild }) {
 		const { sandboxes, guilds } = this.client;
 		await msg.util.send(`Retrieving data...`);
-		guild = guilds.find(val => val.name === `Sandbox ${guild}`);
+		guild = guilds.cache.find(val => val.name === `Sandbox ${guild}`);
 		if (!guild) {
 			if (!sandboxes.size) {
 				return msg.util.send('Amount of test stages: 0');
@@ -55,7 +55,7 @@ class SandboxSeachCommand extends Command {
 		if (invites.size) {
 			invite = invites.first();
 		} else {
-			const channel = guild.channels.find(c => c.type === 'text');
+			const channel = guild.channels.cache.find(c => c.type === 'text');
 			invite = await channel.createInvite({ maxAge: 0 });
 		}
 
@@ -63,7 +63,7 @@ class SandboxSeachCommand extends Command {
 			.setThumbnail(guild.iconURL())
 			.addField(`Sandbox ${guild.sandbox} Information`, stripIndents`
 				ID: ${guild.id}
-				Owner: \`${this.client.users.get(guild.ownerID).tag}\`
+				Owner: \`${this.client.users.cache.get(guild.ownerID).tag}\`
 				Invite: ${invite}
 			`);
 

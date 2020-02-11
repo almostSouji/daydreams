@@ -13,7 +13,7 @@ class GuildMemberRemoveListener extends Listener {
 		if (!channelID) {
 			return;
 		}
-		const channel = member.guild.channels.get(channelID);
+		const channel = member.guild.channels.cache.get(channelID);
 		if (!channel) {
 			return;
 		}

@@ -22,10 +22,10 @@ class ServerInfoCommand extends Command {
 
 	async buildInfoEmbed(ref) {
 		const { members } = ref;
-		const channelCounts = groupBy(ref.channels, c => c.type).map((v, k) => `${toTitleCase(k)} channels: ${v.size}`);
-		const presenceCounts = groupBy(members, m => m.presence.status).map((s, k) => `${displayStatus(this.client, k, ref)} ${s.size}`);
-		const memberCounts = groupBy(members, m => m.user.bot).map((v, k) => `${k ? 'Bots:' : 'Humans:'} ${v.size}`);
-		const roleCount = `Roles: ${ref.roles.size}`;
+		const channelCounts = groupBy(ref.channels.cache, c => c.type).map((v, k) => `${toTitleCase(k)} channels: ${v.size}`);
+		const presenceCounts = groupBy(members.cache, m => m.presence.status).map((s, k) => `${displayStatus(this.client, k, ref)} ${s.size}`);
+		const memberCounts = groupBy(members.cache, m => m.user.bot).map((v, k) => `${k ? 'Bots:' : 'Humans:'} ${v.size}`);
+		const roleCount = `Roles: ${ref.roles.cache.size}`;
 		const embed = new DaydreamEmbed()
 			.setThumbnail(ref.iconURL())
 			.addField('Server Information', stripIndents`

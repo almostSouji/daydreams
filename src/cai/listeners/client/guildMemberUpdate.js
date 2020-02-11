@@ -11,12 +11,12 @@ class GuildMemberUpdateListener extends Listener {
 
 	async exec(oldMember, newMember) {
 		const roleState = this.client.guildSettings.get(newMember.guild.id, 'roleState');
-		const hasAdditions = newMember.roles.keyArray().some(r => !oldMember.roles.has(r));
-		const hasDeletions = oldMember.roles.keyArray().some(r => !newMember.roles.has(r));
+		const hasAdditions = newMember.roles.cache.keyArray().some(r => !oldMember.roles.cache.has(r));
+		const hasDeletions = oldMember.roles.cache.keyArray().some(r => !newMember.roles.cache.has(r));
 
 		if (roleState && (hasAdditions || hasDeletions)) {
 			await newMember.guild.members.fetch(newMember.id);
-			const newRoleKeys = newMember.roles.filter(r => r.id !== newMember.guild.id).keyArray();
+			const newRoleKeys = newMember.roles.cache.filter(r => r.id !== newMember.guild.id).keyArray();
 			const currentState = await this.client.db.models.rolestates.findAll({
 				where: {
 					user: newMember.id,

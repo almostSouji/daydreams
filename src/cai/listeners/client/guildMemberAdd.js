@@ -19,7 +19,7 @@ class GuildMemberAddListener extends Listener {
 			attributes: ['role']
 		});
 		const roles = result.map(e => e.role);
-		const filtered = roles.filter(r => member.guild.roles.has(r) && botMember.roles.highest.comparePositionTo(r) > 0);
+		const filtered = roles.filter(r => member.guild.roles.cache.has(r) && botMember.roles.highest.comparePositionTo(r) > 0);
 		return member.roles.add(filtered, 'Restoring rolestate');
 	}
 }

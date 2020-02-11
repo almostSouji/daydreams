@@ -49,7 +49,7 @@ class ChannelInfoCommand extends Command {
 		if (ref.type === 'voice') {
 			let voiceString = `Bitrate: ${ref.bitrate / 1000} kbps`;
 			if (ref.userLimit) {
-				voiceString += `\nCapacity: \`${ref.members.size.toString().padStart(2, '0')}/${ref.userLimit.toString().padStart(2, '0')}\``;
+				voiceString += `\nCapacity: \`${ref.members.cache.size.toString().padStart(2, '0')}/${ref.userLimit.toString().padStart(2, '0')}\``;
 			}
 
 			embed.addField('Voice Information', voiceString, false);

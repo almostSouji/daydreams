@@ -62,7 +62,7 @@ class DaydreamClient extends AkairoClient {
 	}
 
 	get hubGuild() {
-		return this.guilds.get(this.hubGuildID);
+		return this.guilds.cache.get(this.hubGuildID);
 	}
 
 	async start() {

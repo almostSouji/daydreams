@@ -89,8 +89,8 @@ class SandboxBuildCommand extends Command {
 		}
 
 		const guild = await this.client.guilds.create(`Sandbox ${slot}`, { icon: this.client.config.icons[status] });
-		const voiceCategory = guild.channels.find(c => c.name === 'Voice Channels');
-		const textCategory = guild.channels.find(c => c.name === 'Text Channels');
+		const voiceCategory = guild.channels.cache.find(c => c.name === 'Voice Channels');
+		const textCategory = guild.channels.cache.find(c => c.name === 'Text Channels');
 		const channel = await guild.channels.create('welcome', {
 			type: 'text',
 			parent: textCategory,
@@ -136,7 +136,7 @@ class SandboxBuildCommand extends Command {
 			.setThumbnail(guild.iconURL())
 			.addField(`Sandbox ${slot} Information`, stripIndents`
 				ID: ${guild.id}
-				Owner: \`${this.client.users.get(guild.ownerID).tag}\`
+				Owner: \`${this.client.users.cache.get(guild.ownerID).tag}\`
 				Invite: ${invite}
 			`)
 			.setFooter(`created by ${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL())
