@@ -172,7 +172,7 @@ class UserInfoCommand extends Command {
 				queryFetch = await msg.guild.members.fetch(target);
 			}
 			if (queryFetch.size) {
-				return msg.util.send('', await this.buildInfoEmbed(msg, queryFetch.first, permissions, color, blacklist));
+				return msg.util.send('', await this.buildInfoEmbed(msg, queryFetch.first(), permissions, color, blacklist));
 			}
 			throw new Error('no member');
 		} catch (err) {

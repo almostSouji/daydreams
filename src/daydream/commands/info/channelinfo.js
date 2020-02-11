@@ -80,7 +80,8 @@ class ChannelInfoCommand extends Command {
 		return embed;
 	}
 
-	exec(msg, { channel }) {
+	async exec(msg, { channel }) {
+		await msg.guild.members.fetch();
 		if (channel instanceof Channel) {
 			return msg.util.send('', this.buildInfoEmbed(channel));
 		}
