@@ -6,17 +6,17 @@ module.exports = {
 	apps: [
 		{
 			name: 'cai',
-			script: './src/cai/bot.js',
+			script: './bot.js',
 			cwd: './src/cai'
 		},
 		{
 			name: 'cel',
-			script: './src/cel/bot.js',
+			script: './bot.js',
 			cwd: './src/cel'
 		},
 		{
 			name: 'xiv',
-			script: './src/xiv/bot.js',
+			script: './bot.js',
 			cwd: './src/xiv'
 		}
 	]
