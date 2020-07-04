@@ -137,7 +137,7 @@ class UserInfoCommand extends Command {
 			const creator = await this.client.users.fetch('83886770768314368');
 			const permissionArray = [...new Set(this.handler.modules.reduce((a, e) => a.concat(e.clientPermissions), []).filter(e => e))];
 			const perm = new Permissions(permissionArray);
-			const botStatsString = `Guilds: ${this.client.guilds.cache.size} | Users: ${this.client.users.ache.size} | Channels: ${this.client.channels.cache.size}`;
+			const botStatsString = `Guilds: ${this.client.guilds.cache.size} | Users: ${this.client.users.cache.size} | Channels: ${this.client.channels.cache.size}`;
 			const botInfoString = stripIndents`
 					Runtime: Node ${process.version}
 					Library: Discord.js ${version}
