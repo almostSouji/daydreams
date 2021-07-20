@@ -1,3 +1,8 @@
+Daydreams is fully discontinued, apart from test stage administration which lives on in https://github.com/almostSouji/cell
+
+<details>
+<summary>original readme</summary>
+
 # Daydreams
 <img src="https://i.imgur.com/piB00Bq.png" align="right" width="200">
 
@@ -25,3 +30,6 @@ Artwork by [BEEPLE](https://www.beeple-crap.com/vjloops)
 ℹ *You can leave these out, if you do not use this specific bot*
 
 **X.I.V:** `xivapi-js`
+
+
+</details>
